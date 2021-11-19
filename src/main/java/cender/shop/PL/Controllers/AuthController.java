@@ -2,13 +2,13 @@ package cender.shop.PL.Controllers;
 
 
 import cender.shop.PL.DTO.User.BasicUserDto;
+import cender.shop.PL.DTO.User.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("api/auth")
+@RestController()
+@RequestMapping("api/auth")
 public class AuthController {
-
-
     ///  <summary>
     ///      Creates a new user in database and sends him a confirmation link
     ///  </summary>
@@ -17,9 +17,8 @@ public class AuthController {
     ///  <response code="201">Returns the newly created item</response>
     ///  <response code="400">If the item is null</response>
     @PostMapping("sign-up")
-    @ResponseStatus(HttpStatus.CREATED )
-    public HttpStatus SignUp(BasicUserDto userModel) {
-        return HttpStatus.CREATED;
+    public String SignUp(@ModelAttribute UserDto userModel) {
+        return userModel.toString();
     }
 
     ///  <summary>
@@ -30,7 +29,6 @@ public class AuthController {
     ///  <response code="200">Token is generated</response>
     ///  <response code="400">Unable to authenticate with provided email or password</response>
     @PostMapping("sign-in")
-    @ResponseStatus(HttpStatus.OK)
     public HttpStatus SignIn(BasicUserDto userModel) {
         return HttpStatus.OK;
     }
@@ -44,8 +42,7 @@ public class AuthController {
     ///  <response code="204">Email confirmed successfully</response>
     ///  <response code="400">Email cannot be confirmed</response>
     @GetMapping("email-confirmation")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public HttpStatus ConfirmEmail(@PathVariable String id,@PathVariable String token) {
+    public HttpStatus ConfirmEmail(@RequestParam int id,@RequestParam String token) {
         return HttpStatus.NO_CONTENT;
     }
 }

@@ -1,4 +1,5 @@
 package cender.shop.PL.DTO.User;
 
-public class UserDto {
+public class UserDto extends BasicUserDto {
+    public String password;
 }

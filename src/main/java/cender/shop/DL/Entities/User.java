@@ -1,12 +1,27 @@
 package cender.shop.DL.Entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Date;
 
-public class User extends BaseClass {
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name="Users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotEmpty
     @NotBlank
     public String username;
@@ -17,7 +32,4 @@ public class User extends BaseClass {
     @Email(message = "Email should be valid")
     public String email;
     public Date registrationDate;
-
-    public Collection<Product> ownedProducts;
-    public Collection<Order> shoppingCart;
 }

@@ -1,6 +1,7 @@
 package cender.shop.PL.Controllers;
 
 
+import cender.shop.PL.DTO.Cart.ExtendedOrderDto;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,8 @@ public class OrderController {
     ///  <response code="200">Information taken successfully</response>
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="404">Order doesn't exist</response>
-    @GetMapping()
-    public void GetOrderList(int[] id) {
+    @GetMapping("{id}")
+    public void GetOrderList(@PathVariable int[] id) {
     }
 
     ///  <summary>
@@ -30,7 +31,7 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="500">Order already exist</response>
     @PostMapping()
-    public void CreateOrder() {
+    public void CreateOrder(@ModelAttribute BasicUserDto model) {
 
     }
 
@@ -41,7 +42,7 @@ public class OrderController {
     ///  <response code="200">Orders updated successfully</response>
     ///  <response code="401">User is not authenticated</response>
     @PutMapping()
-    public HttpStatus UpdateOrder() {
+    public HttpStatus UpdateOrder(@ModelAttribute ExtendedOrderDto model) {
         return HttpStatus.OK;
     }
 

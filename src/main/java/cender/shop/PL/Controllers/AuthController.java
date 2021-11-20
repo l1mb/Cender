@@ -3,6 +3,7 @@ package cender.shop.PL.Controllers;
 
 import cender.shop.PL.DTO.User.BasicUserDto;
 import cender.shop.PL.DTO.User.UserDto;
+import cender.shop.PL.DTO.User.loginUserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class AuthController {
     ///  <response code="200">Token is generated</response>
     ///  <response code="400">Unable to authenticate with provided email or password</response>
     @PostMapping("sign-in")
-    public HttpStatus SignIn(BasicUserDto userModel) {
+    public HttpStatus SignIn(@ModelAttribute loginUserDto userModel) {
         return HttpStatus.OK;
     }
 

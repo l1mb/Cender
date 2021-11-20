@@ -1,6 +1,7 @@
 package cender.shop.PL.Controllers;
 
 
+import cender.shop.PL.DTO.Product.ProductDto;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class ProductController {
     ///  <returns>Returns list of product models</returns>
     ///  <response code="200">All products received</response>
     @GetMapping("search")
-    public void GetProductsByTerm() {
+    public void GetProductsByTerm(@RequestParam String param) {
 
     }
 
@@ -37,7 +38,7 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @PostMapping()
-    public void CreateNewProduct() {
+    public void CreateNewProduct(@ModelAttribute ProductDto model) {
 
     }
 

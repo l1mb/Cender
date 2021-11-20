@@ -1,15 +1,30 @@
 package cender.shop.PL.Controllers;
 
 
+import cender.shop.BL.Enums.ServiceResultType;
+import cender.shop.BL.Services.AuthService;
+import cender.shop.BL.Services.OrderService;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import cender.shop.PL.DTO.User.UserDto;
 import cender.shop.PL.DTO.User.loginUserDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+@Component
 @RestController()
 @RequestMapping("api/auth")
 public class AuthController {
+
+
+    private AuthService _authService;
+    private OrderService _orderService;
+
+    public AuthController(AuthService authService, OrderService orderService) {
+        this._authService = authService;
+        this._orderService = orderService;
+    }
+
     ///  <summary>
     ///      Creates a new user in database and sends him a confirmation link
     ///  </summary>
@@ -19,7 +34,9 @@ public class AuthController {
     ///  <response code="400">If the item is null</response>
     @PostMapping("sign-up")
     public String SignUp(@ModelAttribute UserDto userModel) {
-        return userModel.toString();
+        var result = _authService.signUp(userModel);
+
+        return ""+result+"";
     }
 
     ///  <summary>
@@ -30,8 +47,9 @@ public class AuthController {
     ///  <response code="200">Token is generated</response>
     ///  <response code="400">Unable to authenticate with provided email or password</response>
     @PostMapping("sign-in")
-    public HttpStatus SignIn(@ModelAttribute loginUserDto userModel) {
-        return HttpStatus.OK;
+    public String SignIn(@ModelAttribute loginUserDto userModel) {
+        var result = _authService.signIn(userModel);
+        return ""+result;
     }
 
     ///  <summary>
@@ -43,7 +61,7 @@ public class AuthController {
     ///  <response code="204">Email confirmed successfully</response>
     ///  <response code="400">Email cannot be confirmed</response>
     @GetMapping("email-confirmation")
-    public HttpStatus ConfirmEmail(@RequestParam int id,@RequestParam String token) {
-        return HttpStatus.NO_CONTENT;
+    public String ConfirmEmail(@RequestParam int id,@RequestParam String token) {
+        return _authService.returnMessage();
     }
 }

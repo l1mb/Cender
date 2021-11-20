@@ -32,4 +32,5 @@ public class User {
     @Email(message = "Email should be valid")
     public String email;
     public Date registrationDate;
+
 }

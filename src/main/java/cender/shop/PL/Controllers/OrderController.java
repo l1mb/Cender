@@ -1,14 +1,28 @@
 package cender.shop.PL.Controllers;
 
 
+import cender.shop.BL.Enums.ServiceResultType;
+import cender.shop.BL.Services.OrderService;
 import cender.shop.PL.DTO.Cart.ExtendedOrderDto;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController()
 @RequestMapping("api/orders")
 public class OrderController {
+
+    private OrderService _orderService;
+
+
+    public OrderController(OrderService orderService){
+        this._orderService = orderService;
+    }
+
+
     ///  <summary>
     ///      Get information about order using provided id
     ///  </summary>
@@ -18,7 +32,8 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="404">Order doesn't exist</response>
     @GetMapping("{id}")
-    public void GetOrderList(@PathVariable int[] id) {
+    public String GetOrderList(@PathVariable(required = false) int id) {
+        return _orderService.returnMessage();
     }
 
     ///  <summary>
@@ -31,8 +46,12 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="500">Order already exist</response>
     @PostMapping()
-    public void CreateOrder(@ModelAttribute BasicUserDto model) {
-
+    public ResponseEntity CreateOrder(@ModelAttribute BasicUserDto model) {
+        var result = _orderService.createOrder(model);
+        if(result.Result!= ServiceResultType.Success){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     ///  <summary>
@@ -42,8 +61,10 @@ public class OrderController {
     ///  <response code="200">Orders updated successfully</response>
     ///  <response code="401">User is not authenticated</response>
     @PutMapping()
-    public HttpStatus UpdateOrder(@ModelAttribute ExtendedOrderDto model) {
-        return HttpStatus.OK;
+    public String UpdateOrder(@ModelAttribute ExtendedOrderDto model) {
+        var result = _orderService.updateExistingOrder(model);
+
+        return result.ErrorMessage;
     }
 
     ///  <summary>
@@ -56,8 +77,10 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="404">Order doesn't exist</response>
     @DeleteMapping("{id}")
-    public HttpStatus DeleteOrder(@PathVariable int id) {
-        return HttpStatus.NO_CONTENT;
+    public ResponseEntity  DeleteOrder(@PathVariable int[] id) {
+        var result = _orderService.deleteOrder(id);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     ///  <summary>
@@ -69,5 +92,13 @@ public class OrderController {
     ///  <response code="500">Unable to perform payment</response>
     @PostMapping("buy")
     public void OrderPayment() {
+        var result = _orderService.completeOrders();
+    }
+
+    @GetMapping("completed")
+    public List<ExtendedOrderDto> GetCompleted(){
+        var result = _orderService.getCompletedOrders();
+
+        return result;
     }
 }

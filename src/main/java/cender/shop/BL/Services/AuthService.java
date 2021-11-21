@@ -29,6 +29,7 @@ public class AuthService {
 
         return new ServiceResult(ServiceResultType.NotFound);
     }
+
     public ServiceResult signUp(UserDto userDto){
         _authRepository.save(new Auth(1L, 1,userDto.password ));
         return new ServiceResult(ServiceResultType.Success);

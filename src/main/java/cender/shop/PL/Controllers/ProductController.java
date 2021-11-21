@@ -1,6 +1,8 @@
 package cender.shop.PL.Controllers;
 
 
+import cender.shop.BL.Services.ProductService;
+import cender.shop.DL.Entities.Product;
 import cender.shop.PL.DTO.Product.ProductDto;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import org.springframework.http.HttpStatus;
@@ -9,14 +11,23 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 @RequestMapping("api/products")
 public class ProductController {
+
+    private ProductService _productService;
+
+    public ProductController(ProductService productService){
+        this._productService = productService;
+    }
+
     ///  <summary>
     ///      Filter products by their names, skipped count and offset from the first element
     ///  </summary>
     ///  <returns>Returns list of product models</returns>
     ///  <response code="200">All products received</response>
     @GetMapping("search")
-    public void GetProductsByTerm(@RequestParam String param) {
+    public Product GetProductsByTerm(@RequestParam String param) {
+        var result = _productService.getProductByTerms();
 
+        return result.Data;
     }
 
     ///  <summary>
@@ -26,7 +37,8 @@ public class ProductController {
     ///  <response code="200">Product successfully received</response>
     ///  <response code="404">Product doesn't exist</response>
     @GetMapping("id/{id:int}")
-    public  void GetProductById(@PathVariable int id) {
+    public Product GetProductById(@PathVariable int id) {
+        var result = _productService.getProductById();
 
     }
 

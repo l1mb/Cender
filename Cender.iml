@@ -35,6 +35,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="ojdbc10" level="project" />
+    <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:2.4.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-batch:2.5.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.5.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.5.5" level="project" />
@@ -200,6 +202,5 @@
     <orderEntry type="library" name="Maven: com.github.docker-java:docker-java-transport:3.2.11" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:5.8.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:23.0.0" level="project" />
-    <orderEntry type="library" name="ojdbc10" level="project" />
   </component>
 </module>

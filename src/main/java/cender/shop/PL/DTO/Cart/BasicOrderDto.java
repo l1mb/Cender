@@ -1,22 +1,19 @@
 package cender.shop.PL.DTO.Cart;
 
-    public class BasicOrderDto
+import org.jetbrains.annotations.NotNull;
+
+import javax.validation.constraints.Min;
+
+public class BasicOrderDto
     {
-        /// <summary>
-        /// Product's id
-        /// </summary>
-        /// <example>8</example>
+        @NotNull
         public int productId;
 
-        /// <summary>
-        /// User's id
-        /// </summary>
-        /// <example>2</example>
+        @NotNull
+        @Min(0)
         public int applicationUserId;
 
-        /// <summary>
-        /// Products count
-        /// </summary>
-        /// <example>2</example>
+        @NotNull
+        @Min(0)
         public int count;
     }

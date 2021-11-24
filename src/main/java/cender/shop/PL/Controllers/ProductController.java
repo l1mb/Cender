@@ -38,8 +38,9 @@ public class ProductController {
     ///  <response code="404">Product doesn't exist</response>
     @GetMapping("id/{id:int}")
     public Product GetProductById(@PathVariable int id) {
-        var result = _productService.getProductById();
+        var result = _productService.getProductById(id);
 
+        return result.Data;
     }
 
     ///  <summary>

@@ -55,7 +55,8 @@ public class OrderService {
         var orders = _orderRepo.findByUserId((long) id);
         return orders;
     }
-    public void getOrdersById(Long id) {
-        var orders = _orderRepo.findById(id);
+    public Order getOrdersById(Long id) {
+        var order = _orderRepo.findById(id);
+        return order.get();
     }
 }

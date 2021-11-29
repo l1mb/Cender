@@ -1,10 +1,9 @@
 package cender.shop.PL.Controllers;
 
 
-import cender.shop.BL.Enums.ServiceResultType;
 import cender.shop.BL.Services.AuthService;
 import cender.shop.BL.Services.OrderService;
-import cender.shop.PL.DTO.User.BasicUserDto;
+import cender.shop.DL.Entities.Users.User;
 import cender.shop.PL.DTO.User.UserDto;
 import cender.shop.PL.DTO.User.loginUserDto;
 import org.springframework.http.HttpStatus;
@@ -46,9 +45,11 @@ public class AuthController {
     ///  <response code="200">Token is generated</response>
     ///  <response code="400">Unable to authenticate with provided email or password</response>
     @PostMapping("sign-in")
-    public String SignIn(@ModelAttribute loginUserDto userModel) {
+    public User SignIn(@ModelAttribute loginUserDto userModel) {
         var result = _authService.signIn(userModel);
-        return ""+result;
+        // todo detect wrong output
+        // and it should return jwt instead of entity
+        return result.Data;
     }
 
     ///  <summary>
@@ -60,7 +61,10 @@ public class AuthController {
     ///  <response code="204">Email confirmed successfully</response>
     ///  <response code="400">Email cannot be confirmed</response>
     @GetMapping("email-confirmation")
-    public String ConfirmEmail(@RequestParam int id,@RequestParam String token) {
-        return _authService.returnMessage();
+    public HttpStatus ConfirmEmail(@RequestParam int id, @RequestParam String token) {
+        var result  = _authService.confirmEmail(id, token);
+
+        return HttpStatus.NO_CONTENT;
+
     }
 }

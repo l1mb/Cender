@@ -1,2 +1,5 @@
-package cender.shop.DL.Entities.Users;public class BaseUser {
+package cender.shop.DL.Entities.Users;
+
+public class BaseUser {
+    public boolean isEmailConfirmed;
 }

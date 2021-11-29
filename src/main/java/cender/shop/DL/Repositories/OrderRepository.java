@@ -3,9 +3,15 @@ package cender.shop.DL.Repositories;
 import cender.shop.DL.Entities.Order;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    public default String returnMessage(){
+     default String returnMessage(){
         return "message";
+    }
+
+    default List<Order> findByUserId(long id) {
+        return null;
     }
 }

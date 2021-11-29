@@ -33,6 +33,7 @@ public class OrderController {
     ///  <response code="404">Order doesn't exist</response>
     @GetMapping("{id}")
     public String GetOrderList(@PathVariable(required = false) int id) {
+        var result = _orderService.getOrders(id);
         return _orderService.returnMessage();
     }
 

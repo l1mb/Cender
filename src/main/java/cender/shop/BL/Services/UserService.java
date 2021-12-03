@@ -51,6 +51,7 @@ public class UserService implements UserDetailsService {
         return new ServiceResult(ServiceResultType.Success, "User registered");
     }
 
+
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return userRepository.getByEmail(login);
     }

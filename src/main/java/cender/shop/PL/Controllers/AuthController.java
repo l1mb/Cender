@@ -31,10 +31,10 @@ public class AuthController {
     ///  <response code="201">Returns the newly created item</response>
     ///  <response code="400">If the item is null</response>
     @PostMapping("sign-up")
-    public String SignUp(@ModelAttribute UserDto userModel) {
+    public User SignUp(@ModelAttribute UserDto userModel) {
         var result = _authService.signUp(userModel);
 
-        return ""+result+"";
+        return result.Data;
     }
 
     ///  <summary>
@@ -45,7 +45,7 @@ public class AuthController {
     ///  <response code="200">Token is generated</response>
     ///  <response code="400">Unable to authenticate with provided email or password</response>
     @PostMapping("sign-in")
-    public User SignIn(@ModelAttribute loginUserDto userModel) {
+    public String SignIn(@ModelAttribute loginUserDto userModel) throws Exception {
         var result = _authService.signIn(userModel);
         // todo detect wrong output
         // and it should return jwt instead of entity

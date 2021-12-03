@@ -3,6 +3,7 @@ package cender.shop.PL.Controllers;
 
 import cender.shop.BL.Enums.ServiceResultType;
 import cender.shop.BL.Services.OrderService;
+import cender.shop.DL.Entities.Order;
 import cender.shop.PL.DTO.Cart.ExtendedOrderDto;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import org.springframework.http.HttpStatus;
@@ -32,10 +33,10 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="404">Order doesn't exist</response>
     @GetMapping("{id}")
-    public String GetOrderList(@PathVariable(required = false) int id) {
+    public Order GetOrderList(@PathVariable(required = false) int id) {
         // todo improve
         var result = _orderService.getOrdersById((long) id);
-        return _orderService.returnMessage();
+        return result;
     }
 
     ///  <summary>

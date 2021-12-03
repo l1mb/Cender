@@ -10,4 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "exec GetUserByEmail :email", nativeQuery = true)
     User getByEmail(@Param("email") String email);
+
+    User getByLogin(String login);
 }

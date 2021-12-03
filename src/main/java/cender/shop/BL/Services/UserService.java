@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class UserService implements UserDetailsService {
 
@@ -73,8 +74,7 @@ public class UserService implements UserDetailsService {
     public Auth updatePassword(String login, String password) throws NoSuchAlgorithmException {
         var user = getUserByLogin(login);
         var auth = _authRepository.findByUseId(user.getId());
-        auth.hash= String.valueOf(Hash.getSaltedHash(password, Hash.getSalt()));
-        var result = _authRepository.save(auth);
-        return result;
+        auth.hash= Arrays.toString(Hash.getSaltedHash(password, Hash.getSalt()));
+        return _authRepository.save(auth);
     }
 }

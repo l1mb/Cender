@@ -4,8 +4,6 @@ package cender.shop.PL.Controllers;
 import cender.shop.BL.Services.ProductService;
 import cender.shop.DL.Entities.Product;
 import cender.shop.PL.DTO.Product.ProductDto;
-import cender.shop.PL.DTO.User.BasicUserDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
@@ -51,20 +49,9 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @PostMapping()
-    public void CreateNewProduct(@ModelAttribute ProductDto model) {
-
-    }
-
-    ///  <summary>
-    ///      Create rating with provided model properties
-    ///  </summary>
-    ///  <param name="ratingDto">data transfer object for creating a new product in database</param>
-    ///  <response code="201">Created successfully</response>
-    ///  <response code="401">User is not authenticated</response>
-    ///  <response code="403">User has no access to this resource</response>
-    @PostMapping("rating")
-    public void CreateRating() {
-
+    public Product CreateNewProduct(@ModelAttribute ProductDto model) {
+        var result = _productService.createNewProduct(model);
+        return result;
     }
 
     ///  <summary>
@@ -75,8 +62,9 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @PutMapping()
-    public void UpdateProduct() {
-
+    public void UpdateProduct(@ModelAttribute ProductDto model) {
+        var result = _productService.updateProduct(model);
+        return result;
     }
 
     ///  <summary>
@@ -90,7 +78,8 @@ public class ProductController {
     ///  <response code="403">User has no access to this resource</response>
     @DeleteMapping("id/{id:int}")
     public void DeleteProduct(@PathVariable int id) {
-
+        var result = _productService.deleteProduct(id);
+        return result;
     }
 
     ///  <summary>

@@ -3,11 +3,14 @@ package cender.shop.PL.Controllers;
 
 import cender.shop.BL.Services.UserService;
 import cender.shop.BL.Utilities.JWT;
-import cender.shop.PL.DTO.User.BasicUserDto;
-import io.jsonwebtoken.Jwt;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import cender.shop.DL.Entities.Users.User;
+import cender.shop.PL.DTO.User.UserDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
 
 @RestController()
 @RequestMapping("api/user")
@@ -18,11 +21,14 @@ public class UserController {
     JWT jwt;
 
     final
-    UserService userService;x
+    UserService userService;
+    final
+    ModelMapper modelMapper;
 
-    public UserController(JWT jwt, UserService userService) {
+    public UserController(JWT jwt, UserService userService, ModelMapper modelMapper) {
         this.jwt = jwt;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     ///  <summary>
@@ -34,8 +40,14 @@ public class UserController {
     ///  <response code="400">If the item is null</response>
     ///  <response code="401">User is not authenticated</response>
     @PutMapping()
-    public void UpdateUser() {
+    @ApiResponse(responseCode = "204", description = "No content")
+    @Operation(description = "Return updated user")
+    public User UpdateUser(@RequestHeader("Authorization") String token, @RequestBody UserDto userDto) {
+        String login = jwt.getLoginFromToken(token.substring(7));
+        var castedUser = modelMapper.map(userDto, User.class);
+        User user = userService.updateUser(login, castedUser);
 
+        return user;
     }
 
     ///  <summary>
@@ -47,7 +59,11 @@ public class UserController {
     ///  <response code="400">If patch request is scrap</response>
     ///  <response code="401">User is not authenticated</response>
     @PatchMapping("password")
-    public void UpdatePassword() {
+    @ApiResponse(responseCode = "204", description = "No content")
+    @Operation(description = "Update user password")
+    public void UpdatePassword(@RequestHeader("Authorization") String token, @RequestBody String password) throws NoSuchAlgorithmException {
+        String login = jwt.getLoginFromToken(token.substring(7));
+        var result = userService.updatePassword(login, password);
     }
 
     ///  <summary>
@@ -58,7 +74,9 @@ public class UserController {
     ///  <response code="400">If user claims is junk</response>
     ///  <response code="401">User is not authenticated</response>
     @GetMapping()
-    public void GetInfo() {
-
+    public User GetInfo(@RequestHeader("Authorization") String token) {
+        var login = jwt.getLoginFromToken(token.substring(7));
+        var user = userService.getUserByLogin(login);
+        return user;
     }
 }

@@ -1,9 +1,11 @@
 package cender.shop.BL.Services;
 
 import cender.shop.BL.Enums.ServiceResultType;
+import cender.shop.BL.Utilities.Hash;
 import cender.shop.BL.Utilities.ServiceResult;
-import cender.shop.BL.Utilities.ServiceResultP;
+import cender.shop.DL.Entities.Auth;
 import cender.shop.DL.Entities.Users.User;
+import cender.shop.DL.Repositories.AuthRepository;
 import cender.shop.DL.Repositories.UserRepository;
 import cender.shop.PL.DTO.User.UserDto;
 import cender.shop.PL.DTO.User.loginUserDto;
@@ -13,9 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Objects;
+import java.security.NoSuchAlgorithmException;
 
 public class UserService implements UserDetailsService {
 
@@ -24,6 +25,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     AuthService _authService;
+
+    @Autowired
+    AuthRepository _authRepository;
 
     @Autowired
     ModelMapper _modelMapper;
@@ -56,4 +60,21 @@ public class UserService implements UserDetailsService {
         return userRepository.getByEmail(login);
     }
 
+    public User getUserByLogin(String login){return userRepository.getByLogin(login);}
+
+    public User updateUser(String login, User castedUser) {
+        var user = getUserByLogin(login);
+        user.email = castedUser.email;
+        user.username = castedUser.username;
+        userRepository.save(user);
+        return user;
+    }
+
+    public Auth updatePassword(String login, String password) throws NoSuchAlgorithmException {
+        var user = getUserByLogin(login);
+        var auth = _authRepository.findByUseId(user.getId());
+        auth.hash= String.valueOf(Hash.getSaltedHash(password, Hash.getSalt()));
+        var result = _authRepository.save(auth);
+        return result;
+    }
 }

@@ -8,6 +8,8 @@ import cender.shop.PL.DTO.Product.ProductDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class ProductService{
 
@@ -40,7 +42,20 @@ public class ProductService{
          var product =  _productRepository.findById((long) id);
         if(product.isEmpty()){
             //threw exception
+
         }
-            _productRepository.delete(product.get());
+        _productRepository.delete(product.get());
+    }
+
+    public ArrayList<Product> getProductList(String term) {
+
+        return _productRepository.getBySearchTerm(term);
+
+    }
+
+    public ArrayList<Product> getProductList() {
+
+        return _productRepository.getProductList();
+
     }
 }

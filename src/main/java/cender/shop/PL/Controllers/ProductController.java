@@ -4,7 +4,10 @@ package cender.shop.PL.Controllers;
 import cender.shop.BL.Services.ProductService;
 import cender.shop.DL.Entities.Product;
 import cender.shop.PL.DTO.Product.ProductDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController()
 @RequestMapping("api/products")
@@ -62,9 +65,9 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @PutMapping()
-    public void UpdateProduct(@ModelAttribute ProductDto model) {
-        var result = _productService.updateProduct(model);
-        return result;
+    public ResponseEntity UpdateProduct(@ModelAttribute ProductDto model) {
+        _productService.updateProduct(model);
+        return ResponseEntity.noContent().build();
     }
 
     ///  <summary>
@@ -77,9 +80,10 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @DeleteMapping("id/{id:int}")
-    public void DeleteProduct(@PathVariable int id) {
-        var result = _productService.deleteProduct(id);
-        return result;
+    public ResponseEntity DeleteProduct(@PathVariable int id) {
+        _productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+
     }
 
     ///  <summary>
@@ -88,7 +92,9 @@ public class ProductController {
     ///  <param name="productParametersDto">Provided parameters model</param>
     ///  <returns></returns>
     ///  <response code="200">Products paged successfully</response>
-    @GetMapping("list")
-    public void GetProductList() {
+    @GetMapping("list/{term:String}")
+    public ResponseEntity<ArrayList<Product>> GetProductList(@PathVariable(required = false) String term) {
+        var result = _productService.getProductList(term);
+        return ResponseEntity.ok(result);
     }
 }

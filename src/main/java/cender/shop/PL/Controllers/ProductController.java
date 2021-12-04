@@ -4,9 +4,10 @@ package cender.shop.PL.Controllers;
 import cender.shop.BL.Services.ProductService;
 import cender.shop.DL.Entities.Product;
 import cender.shop.PL.DTO.Product.ProductDto;
-import cender.shop.PL.DTO.User.BasicUserDto;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController()
 @RequestMapping("api/products")
@@ -51,20 +52,9 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @PostMapping()
-    public void CreateNewProduct(@ModelAttribute ProductDto model) {
-
-    }
-
-    ///  <summary>
-    ///      Create rating with provided model properties
-    ///  </summary>
-    ///  <param name="ratingDto">data transfer object for creating a new product in database</param>
-    ///  <response code="201">Created successfully</response>
-    ///  <response code="401">User is not authenticated</response>
-    ///  <response code="403">User has no access to this resource</response>
-    @PostMapping("rating")
-    public void CreateRating() {
-
+    public Product CreateNewProduct(@ModelAttribute ProductDto model) {
+        var result = _productService.createNewProduct(model);
+        return result;
     }
 
     ///  <summary>
@@ -75,8 +65,9 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @PutMapping()
-    public void UpdateProduct() {
-
+    public ResponseEntity UpdateProduct(@ModelAttribute ProductDto model) {
+        _productService.updateProduct(model);
+        return ResponseEntity.noContent().build();
     }
 
     ///  <summary>
@@ -89,7 +80,9 @@ public class ProductController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="403">User has no access to this resource</response>
     @DeleteMapping("id/{id:int}")
-    public void DeleteProduct(@PathVariable int id) {
+    public ResponseEntity DeleteProduct(@PathVariable int id) {
+        _productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
 
     }
 
@@ -99,7 +92,9 @@ public class ProductController {
     ///  <param name="productParametersDto">Provided parameters model</param>
     ///  <returns></returns>
     ///  <response code="200">Products paged successfully</response>
-    @GetMapping("list")
-    public void GetProductList() {
+    @GetMapping("list/{term:String}")
+    public ResponseEntity<ArrayList<Product>> GetProductList(@PathVariable(required = false) String term) {
+        var result = _productService.getProductList(term);
+        return ResponseEntity.ok(result);
     }
 }

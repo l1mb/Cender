@@ -77,4 +77,10 @@ public class UserService implements UserDetailsService {
         auth.hash= Arrays.toString(Hash.getSaltedHash(password, Hash.getSalt()));
         return _authRepository.save(auth);
     }
+
+    public User createUser(UserDto userDto) {
+        var mapped = _modelMapper.map(userDto, User.class);
+        var user = userRepository.save(mapped);
+        return user;
+    }
 }

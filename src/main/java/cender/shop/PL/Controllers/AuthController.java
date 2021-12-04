@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 @Component
 @RestController()
 @RequestMapping("api/auth")
@@ -31,8 +33,9 @@ public class AuthController {
     ///  <response code="201">Returns the newly created item</response>
     ///  <response code="400">If the item is null</response>
     @PostMapping("sign-up")
-    public User SignUp(@ModelAttribute UserDto userModel) {
+    public User SignUp(@ModelAttribute UserDto userModel) throws NoSuchAlgorithmException {
         var result = _authService.signUp(userModel);
+
 
         return result.Data;
     }
@@ -52,19 +55,5 @@ public class AuthController {
         return result.Data;
     }
 
-    ///  <summary>
-    ///      Confirms user email
-    ///  </summary>
-    ///  <param name="id">User id</param>
-    ///  <param name="token">Email confirmation token</param>
-    ///  <returns>No content</returns>
-    ///  <response code="204">Email confirmed successfully</response>
-    ///  <response code="400">Email cannot be confirmed</response>
-    @GetMapping("email-confirmation")
-    public HttpStatus ConfirmEmail(@RequestParam int id, @RequestParam String token) {
-        var result  = _authService.confirmEmail(id, token);
 
-        return HttpStatus.NO_CONTENT;
-
-    }
 }

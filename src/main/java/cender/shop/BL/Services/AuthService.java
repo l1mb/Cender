@@ -1,6 +1,7 @@
 package cender.shop.BL.Services;
 
 import cender.shop.BL.Enums.ServiceResultType;
+import cender.shop.BL.Utilities.Hash;
 import cender.shop.BL.Utilities.JwtUtil;
 import cender.shop.BL.Utilities.ServiceResult;
 import cender.shop.BL.Utilities.ServiceResultP;
@@ -16,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.security.NoSuchAlgorithmException;
 
 public class AuthService {
 
@@ -37,6 +40,10 @@ public class AuthService {
     @Autowired
     private JwtUtil _jwtUtil;
 
+    @Autowired
+    private Hash _hash;
+
+
 
     public ServiceResultP<String> signIn(loginUserDto userDto) throws Exception {
         try {
@@ -55,11 +62,93 @@ public class AuthService {
         return new ServiceResultP<String>(ServiceResultType.Success, "", jwt);
     }
 
-    public ServiceResultP<User> signUp(UserDto userDto){
-        _authRepository.save(new Auth(1L, 1,userDto.password ));
-        var user = _modelMapper.map(userDto, User.class);
-        return new ServiceResultP(ServiceResultType.Success, user);
+    public ServiceResultP<User> signUp(UserDto userDto) throws NoSuchAlgorithmException {
+        var createdUser = _userService.createUser(userDto);
+        var salt  = Hash.getSalt();
+        // todo salt type should be varbinaryhelicopter255
+        _authRepository.save(new Auth (Math.toIntExact(createdUser.getId()), Hash.toHex(Hash.getSaltedHash(userDto.password, salt)), Hash.toHex(salt)) );
+        confirmEmail()
+        return new ServiceResultP<>(ServiceResultType.Success, createdUser);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public ServiceResult confirmEmail(int id, String token) {

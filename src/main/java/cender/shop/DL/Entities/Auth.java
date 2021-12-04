@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +22,13 @@ public class Auth {
     public long userId;
     public String hash;
 
+    public String salt;
+
+    public boolean emailConfirmed;
+
+    public Date tokenExpirationDate;
+    public String token;
+
     public Long getId() {
         return id;
     }
@@ -30,8 +38,11 @@ public class Auth {
     }
 
 
-    public Auth(int id, String hsh){
-        userId = id;
-        hash = hsh;
+    public Auth(int id, String hsh, String salt){
+        this.userId = id;
+        this.hash = hsh;
+        this.salt = salt;
+        this.emailConfirmed = false;
+        tokenExpirationDate = new Date();
     }
 }

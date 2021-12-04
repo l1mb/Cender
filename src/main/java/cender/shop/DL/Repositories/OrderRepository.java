@@ -16,4 +16,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     }
 
     Order update(Order mapped);
+
+    void completeOrders(Long id);
+
+    List<Order> findCompletedByUserId(Long userId);
 }

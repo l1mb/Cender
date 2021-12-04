@@ -5,12 +5,13 @@ import cender.shop.BL.Utilities.ServiceResult;
 import cender.shop.BL.Utilities.ServiceResultP;
 import cender.shop.DL.Entities.Order;
 import cender.shop.DL.Repositories.OrderRepository;
+import cender.shop.DL.Repositories.UserRepository;
 import cender.shop.PL.DTO.Cart.BasicOrderDto;
 import cender.shop.PL.DTO.Cart.ExtendedOrderDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -22,6 +23,7 @@ public class OrderService {
 
     @Autowired
     private ModelMapper _modelMapper;
+    private UserRepository _userRepo;
 
     public OrderService(){
 
@@ -46,18 +48,20 @@ public class OrderService {
         return new ServiceResultP<>(ServiceResultType.Success, result);
     }
 
-    public ServiceResult deleteOrder(int[] id) {
-
+    public ServiceResult deleteOrder(Long[] id) {
+        _orderRepo.deleteAllById(Arrays.asList(id));
         return new ServiceResult(ServiceResultType.Success);
     }
 
-    public ServiceResult completeOrders() {
-
-        return new ServiceResult(ServiceResultType.Success);
+    public void completeOrders(String login) {
+        var user = _userRepo.getByLogin(login);
+        _orderRepo.completeOrders(user.getId());
     }
 
-    public List<ExtendedOrderDto> getCompletedOrders(){
-        return new ArrayList<ExtendedOrderDto>();
+    public List<Order> getCompletedOrders(String login){
+        var userId = _userRepo.getByLogin(login).getId();
+
+        return _orderRepo.findCompletedByUserId(userId);
     }
 
     public List<Order> getOrdersByUserId(int id) {

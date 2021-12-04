@@ -3,11 +3,11 @@ package cender.shop.PL.Controllers;
 
 import cender.shop.BL.Enums.ServiceResultType;
 import cender.shop.BL.Services.OrderService;
+import cender.shop.BL.Utilities.JWT;
+import cender.shop.BL.Utilities.TokenDynamoElectricMachine;
 import cender.shop.DL.Entities.Order;
 import cender.shop.PL.DTO.Cart.BasicOrderDto;
 import cender.shop.PL.DTO.Cart.ExtendedOrderDto;
-import cender.shop.PL.DTO.User.BasicUserDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +17,17 @@ import java.util.List;
 @RequestMapping("api/orders")
 public class OrderController {
 
-    private OrderService _orderService;
+
+    private final TokenDynamoElectricMachine tdem;
+    private final OrderService _orderService;
+
+    private final JWT jwt;
 
 
-    public OrderController(OrderService orderService){
+    public OrderController(JWT jwt, OrderService orderService, TokenDynamoElectricMachine tdem, OrderService _orderService){
         this._orderService = orderService;
+        this.tdem = tdem;
+        this.jwt = jwt;
     }
 
 
@@ -84,10 +90,10 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="404">Order doesn't exist</response>
     @DeleteMapping("{id}")
-    public ResponseEntity  DeleteOrder(@PathVariable int[] id) {
+    public ResponseEntity  DeleteOrder(@PathVariable Long[] id) {
         var result = _orderService.deleteOrder(id);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     ///  <summary>
@@ -98,14 +104,20 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="500">Unable to perform payment</response>
     @PostMapping("buy")
-    public void OrderPayment() {
-        var result = _orderService.completeOrders();
+    public ResponseEntity OrderPayment(@RequestHeader("Authorization") String token) {
+        var tok = tdem.getToken(token);
+        var login = jwt.getLoginFromToken(tok);
+        _orderService.completeOrders(login);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("completed")
-    public List<ExtendedOrderDto> GetCompleted(){
-        var result = _orderService.getCompletedOrders();
+    public ResponseEntity<List<Order>> GetCompleted(@RequestHeader("Authorization") String token){
+        var tok = tdem.getToken(token);
+        var login = jwt.getLoginFromToken(tok);
+        var result = _orderService.getCompletedOrders(login);
 
-        return result;
+
+        return ResponseEntity.ok(result);
     }
 }

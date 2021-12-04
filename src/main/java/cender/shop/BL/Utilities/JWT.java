@@ -25,11 +25,7 @@ public class JWT {
         try {
             Jwts.parser().setSigningKey(secretKet).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException expEx) {
-        } catch (UnsupportedJwtException unsEx) {
-        } catch (MalformedJwtException mjEx) {
-        } catch (SignatureException sEx) {
-        } catch (Exception e) {
+        } catch (Exception mjEx) {
         }
         return false;
     }

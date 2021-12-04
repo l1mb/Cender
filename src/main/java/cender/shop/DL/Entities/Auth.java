@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Data
@@ -43,6 +45,6 @@ public class Auth {
         this.hash = hsh;
         this.salt = salt;
         this.emailConfirmed = false;
-        tokenExpirationDate = new Date();
+        tokenExpirationDate = Date.from(LocalDate.now().plusDays(7).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

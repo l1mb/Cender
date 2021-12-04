@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
+
 public abstract class Hash {
     public static byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");

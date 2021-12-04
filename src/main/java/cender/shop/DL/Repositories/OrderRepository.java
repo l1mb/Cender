@@ -14,4 +14,6 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     default List<Order> findByUserId(long id) {
         return null;
     }
+
+    Order update(Order mapped);
 }

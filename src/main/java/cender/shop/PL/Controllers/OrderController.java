@@ -4,6 +4,7 @@ package cender.shop.PL.Controllers;
 import cender.shop.BL.Enums.ServiceResultType;
 import cender.shop.BL.Services.OrderService;
 import cender.shop.DL.Entities.Order;
+import cender.shop.PL.DTO.Cart.BasicOrderDto;
 import cender.shop.PL.DTO.Cart.ExtendedOrderDto;
 import cender.shop.PL.DTO.User.BasicUserDto;
 import org.springframework.http.HttpStatus;
@@ -49,12 +50,15 @@ public class OrderController {
     ///  <response code="401">User is not authenticated</response>
     ///  <response code="500">Order already exist</response>
     @PostMapping()
-    public ResponseEntity CreateOrder(@ModelAttribute BasicUserDto model) {
-        var result = _orderService.createOrder(model);
-        if(result.Result!= ServiceResultType.Success){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity CreateOrder(@RequestBody BasicOrderDto order) {
+        if (order == null){
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity(HttpStatus.OK);
+        var result = _orderService.createOrder(order);
+        if(result.Result!= ServiceResultType.Success){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
     ///  <summary>

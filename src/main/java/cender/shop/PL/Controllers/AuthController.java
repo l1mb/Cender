@@ -34,6 +34,7 @@ public class AuthController {
     public User SignUp(@ModelAttribute UserDto userModel) {
         var result = _authService.signUp(userModel);
 
+
         return result.Data;
     }
 

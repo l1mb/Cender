@@ -6,6 +6,8 @@ import cender.shop.DL.Entities.Product;
 import cender.shop.DL.Repositories.ProductRepository;
 import cender.shop.PL.DTO.Product.ProductDto;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 @Service
 public class ProductService{
 
+    @Autowired
     private ProductRepository _productRepository;
     private ModelMapper modelMapper;
 
@@ -49,13 +52,13 @@ public class ProductService{
 
     public ArrayList<Product> getProductList(String term) {
 
-        return _productRepository.getBySearchTerm(term);
+        return (ArrayList<Product>) _productRepository.getBySearchTerm(term);
 
     }
 
     public ArrayList<Product> getProductList() {
 
-        return _productRepository.getProductList();
+        return (ArrayList<Product>) _productRepository.getProductList();
 
     }
 }

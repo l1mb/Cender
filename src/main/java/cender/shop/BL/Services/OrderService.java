@@ -23,15 +23,13 @@ public class OrderService {
 
     @Autowired
     private ModelMapper _modelMapper;
+    @Autowired
     private UserRepository _userRepo;
 
     public OrderService(){
 
     }
 
-    public String returnMessage(){
-        return _orderRepo.returnMessage();
-    }
 
 
     public ServiceResultP<Order> createOrder(BasicOrderDto model) {
@@ -61,13 +59,13 @@ public class OrderService {
     public List<Order> getCompletedOrders(String login){
         var userId = _userRepo.getByLogin(login).getId();
 
-        return _orderRepo.findCompletedByUserId(userId);
+        return (List<Order>) _orderRepo.findCompletedByUserId(userId);
     }
 
     public List<Order> getOrdersByUserId(int id) {
         // todo implement
         var orders = _orderRepo.findByUserId((long) id);
-        return orders;
+        return (List<Order>) orders;
     }
     public Order getOrdersById(Long id) {
         var order = _orderRepo.findById(id);

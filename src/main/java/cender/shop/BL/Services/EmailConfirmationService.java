@@ -1,13 +1,16 @@
 package cender.shop.BL.Services;
 
 import cender.shop.BL.Enums.ServiceResultType;
+import cender.shop.BL.Interfaces.EmailSender;
 import cender.shop.BL.Utilities.ServiceResult;
 import cender.shop.BL.Utilities.ServiceResultP;
 import cender.shop.DL.Entities.Auth;
 import cender.shop.DL.Repositories.AuthRepository;
-import cender.shop.DL.Repositories.EmailRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +22,20 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class EmailConfirmationService {
+@AllArgsConstructor
+public class EmailConfirmationService implements EmailSender {
 
-    private final JavaMailSender mailSender;
-    private EmailRepository _emailRepository;
+    @Autowired
+    private  JavaMailSender mailSender;
     private AuthRepository _authRepository;
 
-    public EmailConfirmationService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
 
     public String generateToken(){
         return UUID.randomUUID().toString();
     }
 
+    @Override
+    @Async
     public void send(String to, String email){
         try{
             MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -49,13 +52,13 @@ public class EmailConfirmationService {
 
     public ServiceResult confirmEmail(String token) {
 
-        var auth = _emailRepository.findByToken(token);
+        var auth = _authRepository.findByToken(token);
         var currentDate = Date.from(Instant.from(LocalDate.now()));
         if(auth.tokenExpirationDate.before(currentDate)&&currentDate.after(auth.tokenExpirationDate)) {
             return new ServiceResult(ServiceResultType.InvalidData, "Token has expired");
         }
         auth.emailConfirmed=true;
-        _authRepository.save(auth);
+        _authRepository.updateAuth(auth);
         return new ServiceResult(ServiceResultType.Success);
     }
 

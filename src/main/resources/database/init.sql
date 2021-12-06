@@ -44,6 +44,7 @@ create table products (
     name varchar(32) not null,
     price decimal not null,
     creation_date timestamp,
+    update_date
     constraint FK_manufacturer_id foreign key (manufacturer_id) references manufacturers(id),
     constraint PK_products primary key (id)
 );
@@ -56,8 +57,16 @@ create table orders(
     orders_count number,
     creation_date timestamp,
     update_date timestamp,
+    order_status_id number,
     constraint FK_product_id foreign key (product_id) references products(id),
+    constraint FK_order_status foreign key (order_status_id) references order_status(id),
     constraint FK_user_id foreign key (user_id) references users(id)
+);
+
+create table order_status(
+    id number generated always as idenitity,
+    order_status varchar(32),
+    constraint PK_order_status primary key (id)
 );
 
 commit;

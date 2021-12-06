@@ -12,11 +12,15 @@ import java.util.ArrayList;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
+    //TODO: add filtration and maybe pagination
+
     @Query(value = "exec GetBySearchTerm :term", nativeQuery = true)
     Iterable<Product> getBySearchTerm(@Param("term") String term);
 
+
     @Procedure(value = "GetProductList")
     Iterable<Product> getProductList();
+
 
 
     @Procedure(value = "exec CreateProduct")

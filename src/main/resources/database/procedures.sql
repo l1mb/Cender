@@ -100,7 +100,128 @@ create or replace procedure FindOrdersByUserId (user_id in number, order_row out
             select * into order_row from orders where user_id = user_id;
         end;
 
-
 --UpdateOrder
+
+--TODO: add order status
+create or replace procedure UpdateOrder (
+                                          id number,
+                                           orders_count number,
+                                            creation_date timestamp,
+                                             update_date timestamp
+                                              )
+    as
+        begin
+            update orders set
+             orders_count = orders_count, creation_date = creation_date, update_date = update_date
+              where id = id;
+        end;
+
+create or replace procedure CreateOrder (
+                                         product_id number,
+                                          user_id number,
+                                           orders_count number,
+                                            creation_date timestamp,
+                                             update_date timestamp
+                                              )
+    as
+        begin
+            insert into orders (product_id,user_id, orders_count, creation_date,update_date)
+	            values (product_id,user_id, orders_count, creation_date,update_date);
+        end;
+
 --CompleteOrders
+
+create or replace procedure CompleteOrders (
+                                            user_id number
+                                             )
+    as
+        begin
+            update orders set status_id =
+             (select id from order_status where order_status = 'Complete')
+               where user_id = user_id;
+        end;
+
 --FindCompletedByUserID
+
+create or replace procedure FindCompletedOrdersByUserId(
+                                                        user_id in number,
+                                                         order_row out orders%rowtype
+                                                          )
+    as
+        begin
+            select (id, product_id, user_id, orders_count, creation_date, update_date, order_status_id)
+                into order_row
+                 from orders o inner join order_status os on o.order_status_id = os.id
+                  where order_status = 'Complete';
+        end;
+
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+--  Product repository
+
+--GetProductById
+create or replace procedure GetProductById(
+                                           id in number,
+                                            product_row out product%rowtype
+                                            )
+    as
+        begin
+            select * into product_row from products where id = id;
+        end;
+
+--GetProductList
+
+create or replace procedure GetProductList(
+                                           id in number,
+                                            product_row out product%rowtype
+                                            )
+    as
+        begin
+            select * into product_row from products;
+        end;
+
+
+--DeleteProduct
+
+create or replace procedure DeleteProduct(
+                                           id in number
+                                            )
+    as
+        begin
+            delete from products where id = id;
+        end;
+
+--UpdateProduct
+
+create or replace procedure UpdateProduct(
+                                          id number,
+                                           manufacturer_id number,
+                                            name varchar,
+                                             price decimal ,
+                                              creation_date timestamp
+                                            )
+    as
+        begin
+            update products set manufacturer_id = manufacturer_id, name = name, price = price,
+             creation_date = creation_date
+              where id = id;
+        end;
+
+--CreateProduct
+
+create or replace procedure CreateProduct(
+                                            name varchar,
+                                             price decimal ,
+                                              creation_date timestamp
+                                            )
+    is
+            cur_date TIMESTAMP;
+        begin
+            select systimestamp into cur_date from DUAL;
+            update products set manufacturer_id = manufacturer_id, name = name, price = price,
+             creation_date = creation_date
+              where id = id;
+        end;
+

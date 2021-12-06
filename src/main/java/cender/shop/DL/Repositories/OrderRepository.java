@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    @Query(value = "exec FingOrdersByUserId :id", nativeQuery = true)
+    @Query(value = "exec FindOrdersByUserId :id", nativeQuery = true)
     Iterable<Order> findByUserId(long id);
 
     @Procedure(value = "UpdateOrder")
@@ -19,6 +19,9 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     @Procedure(value = "CompleteOrders")
     void completeOrders(Long id);
+
+    @Procedure(value = "DeleteOrder")
+    void deleteOrder(Long id);
 
     @Query(value = "exec FindCompletedByUserID :userId", nativeQuery = true)
     Iterable<Order> findCompletedByUserId(Long userId);

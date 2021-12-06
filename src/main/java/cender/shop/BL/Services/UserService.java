@@ -83,6 +83,7 @@ public class UserService implements UserDetailsService {
         var auth = _authRepository.findByUserId(user.getId());
         var salt = Hash.getSalt();
         auth.hash= Arrays.toString(Hash.getSaltedHash(password, salt));
+        auth.salt = salt;
         return _authRepository.updateAuth(auth);
     }
 

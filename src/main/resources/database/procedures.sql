@@ -1,3 +1,7 @@
+--
+--User procedures
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
 
 create or replace procedure GetUserByLogin (login in users.login%type,
                                             userok out users%rowtype) as
@@ -24,160 +28,79 @@ create or replace procedure UpdateUser (user_id number, login varchar,
 	        update users set email = login , username = changed_username where id = user_id;
         end;
 
-
-
-
 create or replace procedure GrantAdmin (user_id number) as
     begin
 	    update users set role='admin' where id = user_id;
     end;
 
-------------------------------------------------------------------------------------------
--- Users
-------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+--
+--Auth
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
--- Order
-------------------------------------------------------------------------------------------
+--FindHashByUserId
 
-go
-CREATE PROCEDURE GetLastOrderId @user_id int as
-	SELECT TOP 1 id FROM user_order WHERE user_id = @user_id ORDER BY id desc;
-go
+create or replace procedure FindHashByUserId (id in number, user_hash out varchar) as
+    begin
+        select hash into user_hash from auth where user_id = id;
+    end;
 
-go
-CREATE PROCEDURE CreateOrder @user_id int, @total float as
-	INSERT INTO user_order (user_id, total_amount) values (@user_id, @total);
-go
+--CreateAuth
 
-go
-CREATE PROCEDURE AddGameToOrder @order_id int, @game_id int as
-	INSERT INTO order_games (game_id, order_id) values (@game_id, @order_id);
-go
+create or replace procedure CreateAuth (user_id varchar,
+                                        hash varchar,
+                                          salt blob,
+                                           token_expiration_date timestamp,
+                                            token varchar)
+    as
+	    begin
+	        insert into auth (user_id, salt, hash,  token, token_expires_at, is_confirmed)
+	            values (user_id, hash, salt , token, token_expiration_date, 0);
+        end;
 
-------------------------------------------------------------------------------------------
--- Order
-------------------------------------------------------------------------------------------
+--UpdateAuth
 
-------------------------------------------------------------------------------------------
--- Publishers
-------------------------------------------------------------------------------------------
+create or replace procedure UpdateAuth (id varchar,
+                                        hash varchar,
+                                          salt blob,
+                                           email_isconfirmed number
+                                            )
+    as
+	    begin
+	        update  auth set hash = hash, salt = salt, is_confirmed= email_isconfirmed where user_id= id;
+	    end;
 
-go
-CREATE PROCEDURE GetPublishers as
-	SELECT * FROM publishers;
-go
+--FindByUserId
 
-go
-CREATE PROCEDURE GetPublishersByPageNumber @page_number int, @page_size int as
-	declare @start_point int = 0;
-	declare @end_point int = 0;
-	set @start_point = ((@page_number - 1) * @page_size) + 1;
-	set @end_point = @start_point + @page_size - 1;
-	SELECT *
-	FROM (SELECT ROW_NUMBER() OVER(ORDER BY (select NULL as noorder)) AS RowNum, *
-			FROM publishers) as alias
-	WHERE RowNum BETWEEN @start_point AND @end_point;
-go
+create or replace procedure FindAuthByUserId (user_id in number, auth_row out auth%rowtype)
+    as
+        begin
+            select * into auth_row from where user_id = user_id;
+        end;
 
-go
-CREATE PROCEDURE GetPublisherByName @name varchar(255) as
-	SELECT * FROM publishers WHERE publisher_name = @name;
-go
+--FindByUserToken
 
-go
-CREATE PROCEDURE GetPublisherById @id int as
-	SELECT * FROM publishers WHERE id = @id;
-go
+create or replace procedure FindAuthByUserToken (token in varchar, auth_row out auth%rowtype)
+    as
+        begin
+            select * into auth_row from auth where token = token;
+        end;
 
-go
-CREATE PROCEDURE GetPublishersCount as
-	SELECT COUNT(*) FROM publishers;
-go
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
 
-go
-CREATE PROCEDURE AddPublisher @name varchar(255) as
-	INSERT INTO publishers (publisher_name) values (@name);
-go
+--OrderRepository
 
-go
-CREATE PROCEDURE DeletePublisher @id int as
-	DELETE FROM publishers WHERE id = @id;
-go
+--FindOrdersByUserId
+create or replace procedure FindOrdersByUserId (user_id in number, order_row out auth%rowtype)
+    as
+        begin
+            select * into order_row from orders where user_id = user_id;
+        end;
 
-go
-CREATE PROCEDURE EditPublisher @id int, @name varchar(255) as
-	UPDATE publishers set publisher_name = @name WHERE id = @id;
-go
 
-------------------------------------------------------------------------------------------
--- Publishers
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
--- Games
-------------------------------------------------------------------------------------------
-
-go
-CREATE PROCEDURE GetGames as
-	SELECT * FROM games;
-go
-
-go
-CREATE PROCEDURE GetGamesCount as
-	SELECT count(*) FROM games;
-go
-
-go
-CREATE PROCEDURE GetGamesByTitleCount @title varchar(255) as
-	SELECT count(*) FROM games WHERE title like '%' + @title + '%';
-go
-
-go
-CREATE PROCEDURE GetGameById @id int as
-	SELECT * FROM games where id = @id;
-go
-
-go
-CREATE PROCEDURE GetGamesByPageNumber @page_number int, @page_size int, @title varchar(255) = null as
-	declare @start_point int = 0;
-	declare @end_point int = 0;
-	set @start_point = ((@page_number - 1) * @page_size) + 1;
-	set @end_point = @start_point + @page_size - 1;
-	if (@title is null)
-		SELECT *
-		FROM (SELECT ROW_NUMBER() OVER(ORDER BY (select NULL as noorder)) AS RowNum, *
-			  FROM games) as alias
-		WHERE RowNum BETWEEN @start_point AND @end_point;
-	else
-		SELECT *
-		FROM (SELECT ROW_NUMBER() OVER(ORDER BY (select NULL as noorder)) AS RowNum, *
-			  FROM games) as alias
-		WHERE RowNum BETWEEN @start_point AND @end_point AND title like '%' + @title + '%';
-go
-
-go
-CREATE PROCEDURE DeleteGame @gameId int as 
-begin
-	DELETE FROM order_games WHERE game_id = @gameId;
-	DELETE FROM games WHERE id = @gameId;
-end;
-go
-
-go
-CREATE PROCEDURE AddGame @publisher_id int, @title varchar(255), @rating varchar(3), @price float, @game_description varchar(4000) as
-begin
-	INSERT INTO games (publisher_id, title, rating, price, game_description) values (@publisher_id, @title, @rating, @price, @game_description);
-end;
-go
-
-go
-CREATE PROCEDURE UpdateGameInfo @id int, @publisher_id int, @title varchar(255), @rating varchar(3), @price float, @game_description varchar(4000) as
-begin
-	UPDATE games SET publisher_id = @publisher_id, title = @title, rating = @rating, price = @price, game_description = @game_description where id = @id;
-end;
-go
-
-------------------------------------------------------------------------------------------
--- Games
-------------------------------------------------------------------------------------------
+--UpdateOrder
+--CompleteOrders
+--FindCompletedByUserID

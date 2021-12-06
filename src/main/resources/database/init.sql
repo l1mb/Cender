@@ -1,6 +1,3 @@
-
-
-
 create table users(
                 	id number generated always as identity,
 	                first_name varchar(255),

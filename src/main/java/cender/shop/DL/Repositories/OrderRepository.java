@@ -17,12 +17,15 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Procedure(value = "UpdateOrder")
     Order update(Order mapped);
 
+    @Procedure(value = "CreateOrder")
+    Order createOrder(Order mapped);
+
     @Procedure(value = "CompleteOrders")
     void completeOrders(Long id);
 
     @Procedure(value = "DeleteOrder")
     void deleteOrder(Long id);
 
-    @Query(value = "exec FindCompletedByUserID :userId", nativeQuery = true)
+    @Query(value = "exec FindCompletedByUserId :userId", nativeQuery = true)
     Iterable<Order> findCompletedByUserId(Long userId);
 }

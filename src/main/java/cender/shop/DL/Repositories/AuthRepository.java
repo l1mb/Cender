@@ -18,8 +18,8 @@ public interface AuthRepository extends CrudRepository<Auth, Long> {
     @Procedure("UpdateAuth")
     Auth updateAuth(Auth auth);
 
-    @Query(value = "exec FindByUserId :id", nativeQuery = true)
+    @Query(value = "exec FindAuthByUserId :id", nativeQuery = true)
     Auth findByUserId(@Param("id") long id);
-    @Query(value = "exec FindByUserToken :token", nativeQuery = true)
+    @Query(value = "exec FindAuthByUserToken :token", nativeQuery = true)
     Auth findByToken(@Param("token") String token);
 }

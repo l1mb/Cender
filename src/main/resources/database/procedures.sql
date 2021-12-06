@@ -77,7 +77,7 @@ create or replace procedure UpdateAuth (id varchar,
 create or replace procedure FindAuthByUserId (user_id in number, auth_row out auth%rowtype)
     as
         begin
-            select * into auth_row from where user_id = user_id;
+            select * into auth_row from auth where user_id = user_id;
         end;
 
 --FindByUserToken
@@ -139,6 +139,15 @@ create or replace procedure CompleteOrders (
             update orders set status_id =
              (select id from order_status where order_status = 'Complete')
                where user_id = user_id;
+        end;
+
+--deleteOrders
+create or replace procedure DeleteOrder(
+                                                        id in number
+                                                          )
+    as
+        begin
+                delete from orders where id = id;
         end;
 
 --FindCompletedByUserID

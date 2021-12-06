@@ -3,7 +3,7 @@
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 
-create or replace procedure GetUserByLogin (login in users.login%type,
+create or replace procedure GetUserByLogin (login in varchar,
                                             userok out users%rowtype) as
 	begin
 	     select * into userok from users where login = login;
@@ -94,7 +94,7 @@ create or replace procedure FindAuthByUserToken (token in varchar, auth_row out 
 --OrderRepository
 
 --FindOrdersByUserId
-create or replace procedure FindOrdersByUserId (user_id in number, order_row out auth%rowtype)
+create or replace procedure FindOrdersByUserId (user_id in number, order_row out orders%rowtype)
     as
         begin
             select * into order_row from orders where user_id = user_id;
@@ -136,7 +136,7 @@ create or replace procedure CompleteOrders (
                                              )
     as
         begin
-            update orders set status_id =
+            update orders set order_status_id =
              (select id from order_status where order_status = 'Complete')
                where user_id = user_id;
         end;
@@ -158,10 +158,10 @@ create or replace procedure FindCompletedOrdersByUserId(
                                                           )
     as
         begin
-            select (id, product_id, user_id, orders_count, creation_date, update_date, order_status_id)
+            select o.id , product_id, user_id, orders_count, creation_date, update_date, order_status_id
                 into order_row
                  from orders o inner join order_status os on o.order_status_id = os.id
-                  where order_status = 'Complete';
+                  where os.order_status = 'Complete';
         end;
 
 
@@ -173,7 +173,7 @@ create or replace procedure FindCompletedOrdersByUserId(
 --GetProductById
 create or replace procedure GetProductById(
                                            id in number,
-                                            product_row out product%rowtype
+                                            product_row out products%rowtype
                                             )
     as
         begin
@@ -184,7 +184,7 @@ create or replace procedure GetProductById(
 
 create or replace procedure GetProductList(
                                            id in number,
-                                            product_row out product%rowtype
+                                            product_row out products%rowtype
                                             )
     as
         begin

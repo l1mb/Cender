@@ -1,113 +1,108 @@
-package cender.shop.BL.Services;
+package com.example.lab1.services;
 
-import cender.shop.BL.Enums.ServiceResultType;
-import cender.shop.BL.Utilities.Hash;
-import cender.shop.BL.Utilities.ServiceResult;
-import cender.shop.DL.Entities.Auth;
-import cender.shop.DL.Entities.Users.User;
-import cender.shop.DL.Repositories.AuthRepository;
-import cender.shop.DL.Repositories.UserRepository;
-import cender.shop.PL.DTO.User.UserDto;
-import cender.shop.PL.DTO.User.loginUserDto;
-import org.modelmapper.ModelMapper;
+import com.example.lab1.dto.productOrderInfoDto;
+import com.example.lab1.dto.UserLoginDto;
+import com.example.lab1.dto.UserRegisterDto;
+import com.example.lab1.model.product;
+import com.example.lab1.model.User;
+import com.example.lab1.repos.productsRepository;
+import com.example.lab1.repos.UsersRepository;
+import com.example.lab1.utils.Hasher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class UserService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UsersRepository usersRepository;
 
     @Autowired
-    AuthService _authService;
+    productsRepository productsRepository;
 
-    @Autowired
-    AuthRepository _authRepository;
-
-    final
-    ModelMapper _modelMapper;
-
-    final
-    BCryptPasswordEncoder _crypt;
-
-    public UserService(BCryptPasswordEncoder _crypt, ModelMapper _modelMapper) {
-        this._crypt = _crypt;
-        this._modelMapper = _modelMapper;
-    }
-
-
-    public ServiceResult login(loginUserDto loginModel){
-        var user = userRepository.getByLogin(loginModel.email);
+    public ServiceResult login(UserLoginDto info){
+        User user = usersRepository.getByLogin(info.login);
 
         if (user == null){
-            return new ServiceResult(ServiceResultType.InvalidData, "User doesn't exists");
+            return new ServiceResult(ServiceCode.BAD_REQUEST, "User doesn't exists");
         }
 
-        return !_authService.getHash(user.getId()).equals(_crypt.encode(loginModel.password))?
-                new ServiceResult(ServiceResultType.InvalidData, "Password incorrect")
-                :
-                new ServiceResult(ServiceResultType.Success, "User authorized");
+        if (!Hasher.isValid(info.password, Hasher.fromHex(user.getPassword()), user.getSalt())){
+            return new ServiceResult(ServiceCode.BAD_REQUEST, "Password incorrect");
+        }
+
+        return new ServiceResult(ServiceCode.OK, "User authorized");
     }
 
-    public ServiceResult register(UserDto info) {
-        var user = convertDtoToUser(info);
-        user.registrationDate = Date.from(Instant.now());
-        user.firstName="salt";
-        user.lastName="sool";
+    public ServiceResult register(UserRegisterDto info){
+        User check = usersRepository.getByLogin(info.login);
 
-        createUser(user);
+        if (check != null){
+            return new ServiceResult(ServiceCode.BAD_REQUEST, "Email already taken");
+        }
 
-        return new ServiceResult(ServiceResultType.Success, "User registered");
+        User user = new User();
+        try{
+            byte[] salt = Hasher.getSalt();
+            byte[] hashedPassword = Hasher.getSaltedHash(info.password, salt);
+            usersRepository.createUser(info.login, Hasher.toHex(hashedPassword), salt, info.name);
+            return new ServiceResult(ServiceCode.CREATED, "User registered");
+        } catch (NoSuchAlgorithmException e) {
+            return new ServiceResult(ServiceCode.BAD_REQUEST, "Server error: " + e.getMessage());
+        }
     }
 
+    public ArrayList<productOrderInfoDto> getUserOrderproducts (Long orderId, Long userId){
+        ArrayList<Integer> ids = (ArrayList<Integer>) usersRepository.getUserOrderproductsIds(orderId, userId);
 
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return userRepository.getByLogin(login);
+        ArrayList<productOrderInfoDto> res = new ArrayList<>();
+
+        for (int id : ids){
+            product product = productsRepository.getproductById((long) id);
+            res.add(new productOrderInfoDto(product.getTitle(), product.getvendor().getvendorName(),
+                    product.getRating(), product.getPrice()));
+        }
+
+        return res;
     }
 
-    public User getUserByLogin(String login){return userRepository.getByLogin(login);}
-
-    public User updateUser(String login, User castedUser) {
-        var user = getUserByLogin(login);
-        user.email = castedUser.email;
-        user.username = castedUser.username;
-        userRepository.updateUser(Math.toIntExact(user.getId()), user.email, user.firstName, user.lastName, user.username, user.registrationDate);
-        return user;
+    public ServiceResult createOrder(Long userId, float total){
+        try{
+            usersRepository.createOrder(userId, total);
+        } catch (Exception e){
+            return new ServiceResult(ServiceCode.BAD_REQUEST, e.getMessage());
+        }
+        return new ServiceResult(ServiceCode.CREATED, "Success");
     }
 
-    //TODO: cloudinary
-    //todo need to add this thing
-    public ServiceResult updatePassword(String login, String password) throws NoSuchAlgorithmException {
-        var user = getUserByLogin(login);
-        var auth = _authRepository.findByUserId(user.getId());
-        var salt = Hash.getSalt();
-        auth.hash= Hash.toHex(Hash.getSaltedHash(password, salt));
-        auth.salt = salt;
-        _authRepository.updateAuth(Math.toIntExact(auth.getId()),auth.hash, auth.salt, auth.emailConfirmed?1:0);
-        return new ServiceResult(ServiceResultType.Success);
+    @Transactional
+    public ServiceResult addproductsToOrder(int orderId, product[] products){
+        try{
+            for (int i = 0; i < products.length; i++) {
+                usersRepository.addproductToOrder((long) orderId, products[i].getId());
+            }
+        } catch(Exception e){
+            return new ServiceResult(ServiceCode.BAD_REQUEST, e.getMessage());
+        }
+        return new ServiceResult(ServiceCode.OK, "Success");
     }
 
-    public ServiceResult createUser(User mapped) {
-        userRepository.createUser(mapped.email, mapped.firstName, mapped.lastName, mapped.username);
-        return new ServiceResult(ServiceResultType.Success);
+    public User getUserByLogin(String login){return usersRepository.getByLogin(login);}
+
+    public Integer getLastOrderId(Long userId){return usersRepository.getLastOrderId(userId);}
+
+    public Iterable<Integer> getUserOrdersIds(Long userId){return usersRepository.getUserOrdersIds(userId);}
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return usersRepository.getByLogin(s);
     }
-
-    public User convertDtoToUser(UserDto userDto){
-        var us = new User();
-        us.username=userDto.username;
-        us.email = userDto.email;
-        return us;
-    }
-
-
 }

@@ -1,5 +1,6 @@
-package cender.shop.BL.Utilities;
+package com.example.lab1.utils;
 
+import com.example.lab1.Exceptions.MyException;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
@@ -7,9 +8,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-
 @Service
-public class JWT {
+public class Jwt {
     private static final String secretKet = "Secret key ahaahahah";
 
     public String generateToken(String login) {
@@ -25,13 +25,17 @@ public class JWT {
         try {
             Jwts.parser().setSigningKey(secretKet).parseClaimsJws(token);
             return true;
-        } catch (Exception mjEx) {
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
-    public String getLoginFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secretKet).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    public String getLoginFromToken(String token) throws MyException {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(secretKet).parseClaimsJws(token).getBody();
+            return claims.getSubject();
+        } catch(Exception ex){
+            throw new MyException("JWT invalid");
+        }
     }
 }

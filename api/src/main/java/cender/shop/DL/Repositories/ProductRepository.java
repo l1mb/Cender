@@ -44,8 +44,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     );
 
 
-    @Query(value = "exec DeleteProduct :gameId", nativeQuery = true)
-    void deleteProduct(@Param("gameId") Long gameId);
+    @Query(value = "exec DeleteProduct :productId", nativeQuery = true)
+    void deleteProduct(@Param("productId") Long productId);
 
 
 

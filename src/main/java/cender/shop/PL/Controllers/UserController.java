@@ -1,6 +1,7 @@
 package cender.shop.PL.Controllers;
 
 
+import cender.shop.BL.Enums.ServiceResultType;
 import cender.shop.BL.Services.UserService;
 import cender.shop.BL.Utilities.JWT;
 import cender.shop.DL.Entities.Users.User;
@@ -8,6 +9,7 @@ import cender.shop.PL.DTO.User.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +32,7 @@ public class UserController {
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
+
 
     ///  <summary>
     ///      Update user profile with provided information
@@ -74,9 +77,14 @@ public class UserController {
     ///  <response code="400">If user claims is junk</response>
     ///  <response code="401">User is not authenticated</response>
     @GetMapping()
-    public User GetInfo(@RequestHeader("Authorization") String token) {
-        var login = jwt.getLoginFromToken(token.substring(7));
+    public ResponseEntity<User> GetInfo(@RequestHeader("Authorization") String token) {
+        if(token == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+            var login = jwt.getLoginFromToken(token.substring(7));
         var user = userService.getUserByLogin(login);
-        return user;
+        return ResponseEntity.ok(user);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -15,10 +16,17 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     Iterable<Order> findByUserId(long id);
 
     @Procedure(value = "UpdateOrder")
-    Order update(Order mapped);
+    void update(int id ,
+                int orders_count ,
+                Date creation_date ,
+                Date update_date );
 
     @Procedure(value = "CreateOrder")
-    Order createOrder(Order mapped);
+    void createOrder(int product_id ,
+                     int user_id ,
+                     int orders_count ,
+                     Date creation_date ,
+                     Date update_date );
 
     @Procedure(value = "CompleteOrders")
     void completeOrders(Long id);

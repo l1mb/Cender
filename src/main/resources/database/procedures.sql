@@ -3,29 +3,31 @@
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 
-create or replace procedure GetUserByLogin (login in varchar,
-                                            userok out users%rowtype) as
-	begin
-	     select * into userok from users where login = login;
-	end;
-
-create or replace procedure CreateUser (login varchar,
-                                        first_name varchar,
-                                         last_name varchar,
-                                          username varchar,
-                                          registration_date timestamp,
-                                            role varchar)
-    as
-	    begin
-	        insert into users (first_name, last_name, email,  registration_date, role)
-	            values (first_name, last_name, login , registration_date, role);
+    create or replace procedure GetUserByLogin (userok sys_refcursor,ln in varchar2 default null) as
+        begin
+            open userok for select *  from users where email = ln;
         end;
 
-create or replace procedure UpdateUser (user_id number, login varchar,
-                                          changed_username varchar)
+	select * from users;
+
+
+
+create or replace procedure CreateUser (ln varchar,
+                                        fe varchar,
+                                         le varchar,
+                                          ue varchar)
     as
 	    begin
-	        update users set email = login , username = changed_username where id = user_id;
+	        insert into users (first_name, last_name, email, username, registration_date)
+	            values (fe, le, ln, ue, TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF'));
+        end;
+        commit;
+
+create or replace procedure UpdateUser (ui number, ln varchar,
+                                          un varchar)
+    as
+	    begin
+	        update users set email = ln , username = un where id = ui;
         end;
 
 create or replace procedure GrantAdmin (user_id number) as
@@ -49,43 +51,43 @@ create or replace procedure FindHashByUserId (id in number, user_hash out varcha
 
 --CreateAuth
 
-create or replace procedure CreateAuth (user_id varchar,
-                                        hash varchar,
-                                          salt blob,
-                                           token_expiration_date timestamp,
-                                            token varchar)
+create or replace procedure CreateAuth (ui varchar,
+                                        hh varchar,
+                                          st blob,
+                                           ted timestamp,
+                                            t varchar)
     as
 	    begin
 	        insert into auth (user_id, salt, hash,  token, token_expires_at, is_confirmed)
-	            values (user_id, hash, salt , token, token_expiration_date, 0);
+	            values (ui, hh, st , t, ted, 0);
         end;
 
 --UpdateAuth
 
 create or replace procedure UpdateAuth (id varchar,
-                                        hash varchar,
-                                          salt blob,
-                                           email_isconfirmed number
+                                         hh varchar,
+                                          st blob,
+                                           ei number
                                             )
     as
 	    begin
-	        update  auth set hash = hash, salt = salt, is_confirmed= email_isconfirmed where user_id= id;
+	        update  auth set hash = hh, salt = st, is_confirmed= ei where user_id= id;
 	    end;
 
 --FindByUserId
 
-create or replace procedure FindAuthByUserId (user_id in number, auth_row out auth%rowtype)
+create or replace procedure FindAuthByUserId (ui in number, auth_row out auth%rowtype)
     as
         begin
-            select * into auth_row from auth where user_id = user_id;
+            select * into auth_row from auth where user_id = ui;
         end;
 
 --FindByUserToken
 
-create or replace procedure FindAuthByUserToken (token in varchar, auth_row out auth%rowtype)
+create or replace procedure FindAuthByUserToken (tn in varchar, auth_row out auth%rowtype)
     as
         begin
-            select * into auth_row from auth where token = token;
+            select * into auth_row from auth where token = tn;
         end;
 
 ----------------------------------------------------------------------------------------------
@@ -94,10 +96,10 @@ create or replace procedure FindAuthByUserToken (token in varchar, auth_row out 
 --OrderRepository
 
 --FindOrdersByUserId
-create or replace procedure FindOrdersByUserId (user_id in number, order_row out orders%rowtype)
+create or replace procedure FindOrdersByUserId (ui in number, order_row out orders%rowtype)
     as
         begin
-            select * into order_row from orders where user_id = user_id;
+            select * into order_row from orders where user_id = ui;
         end;
 
 --UpdateOrder
@@ -105,55 +107,55 @@ create or replace procedure FindOrdersByUserId (user_id in number, order_row out
 --TODO: add order status
 create or replace procedure UpdateOrder (
                                           id number,
-                                           orders_count number,
-                                            creation_date timestamp,
-                                             update_date timestamp
+                                           oc number,
+                                            cr timestamp,
+                                             ud timestamp
                                               )
     as
         begin
             update orders set
-             orders_count = orders_count, creation_date = creation_date, update_date = update_date
+             orders_count = oc, creation_date = cr, update_date = ud
               where id = id;
         end;
 
 create or replace procedure CreateOrder (
-                                         product_id number,
-                                          user_id number,
-                                           orders_count number,
-                                            creation_date timestamp,
-                                             update_date timestamp
+                                         p_id number,
+                                          uid number,
+                                           o_c number,
+                                            c_d timestamp,
+                                             u_d timestamp
                                               )
     as
         begin
             insert into orders (product_id,user_id, orders_count, creation_date,update_date)
-	            values (product_id,user_id, orders_count, creation_date,update_date);
+	            values (p_id, uid, o_c, c_d, u_d);
         end;
 
 --CompleteOrders
 
 create or replace procedure CompleteOrders (
-                                            user_id number
+                                            u_i number
                                              )
     as
         begin
             update orders set order_status_id =
              (select id from order_status where order_status = 'Complete')
-               where user_id = user_id;
+               where user_id = u_i;
         end;
 
 --deleteOrders
 create or replace procedure DeleteOrder(
-                                                        id in number
-                                                          )
+                                        i in number
+                                         )
     as
         begin
-                delete from orders where id = id;
+                delete from orders where id = i;
         end;
 
 --FindCompletedByUserID
 
 create or replace procedure FindCompletedOrdersByUserId(
-                                                        user_id in number,
+                                                        u_i in number,
                                                          order_row out orders%rowtype
                                                           )
     as
@@ -161,7 +163,7 @@ create or replace procedure FindCompletedOrdersByUserId(
             select o.id , product_id, user_id, orders_count, creation_date, update_date, order_status_id
                 into order_row
                  from orders o inner join order_status os on o.order_status_id = os.id
-                  where os.order_status = 'Complete';
+                  where os.order_status = 'Complete' and o.USER_ID = u_i;
         end;
 
 
@@ -172,18 +174,17 @@ create or replace procedure FindCompletedOrdersByUserId(
 
 --GetProductById
 create or replace procedure GetProductById(
-                                           id in number,
+                                           i in number,
                                             product_row out products%rowtype
                                             )
     as
         begin
-            select * into product_row from products where id = id;
+            select * into product_row from products where id = i;
         end;
 
 --GetProductList
 
 create or replace procedure GetProductList(
-                                           id in number,
                                             product_row out products%rowtype
                                             )
     as
@@ -195,42 +196,44 @@ create or replace procedure GetProductList(
 --DeleteProduct
 
 create or replace procedure DeleteProduct(
-                                           id in number
+                                           i in number
                                             )
     as
         begin
-            delete from products where id = id;
+            delete from products where id = i;
         end;
 
 --UpdateProduct
 
 create or replace procedure UpdateProduct(
-                                          id number,
-                                           manufacturer_id number,
-                                            name varchar,
-                                             price decimal ,
-                                              creation_date timestamp
+                                          i number,
+                                           m_i number,
+                                            n varchar,
+                                             pr decimal ,
+                                             lg varchar,
+                                              c_d timestamp
                                             )
     as
         begin
-            update products set manufacturer_id = manufacturer_id, name = name, price = price,
-             creation_date = creation_date
-              where id = id;
+            update products set manufacturer_id = m_i, name = n, price = pr, logo = lg,
+             creation_date = c_d
+              where id = i;
         end;
 
 --CreateProduct
 
 create or replace procedure CreateProduct(
-                                            name varchar,
-                                             price decimal ,
-                                              creation_date timestamp
+                                            n varchar,
+                                             pr decimal,
+                                              lg varchar,
+                                               c_d timestamp
                                             )
     is
             cur_date TIMESTAMP;
         begin
             select systimestamp into cur_date from DUAL;
-            update products set manufacturer_id = manufacturer_id, name = name, price = price,
-             creation_date = creation_date
+            update products set name = n, price = pr, logo = lg,
+             creation_date = c_d
               where id = id;
         end;
 

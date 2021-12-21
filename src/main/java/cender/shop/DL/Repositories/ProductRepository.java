@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
@@ -24,11 +25,23 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 
     @Procedure(value = "exec CreateProduct")
-    void createProduct(Product product);
+    void createProduct(
+            String name,
+            int price ,
+            String logo,
+            Date creation_date
+    );
 
 
     @Procedure(value = "exec UpdateProduct")
-    void updateProduct(Product product);
+    void updateProduct(
+            int id ,
+            int manufacturer_id ,
+            String name,
+            int price  ,
+            String logo,
+            Date creation_date
+    );
 
 
     @Query(value = "exec DeleteProduct :gameId", nativeQuery = true)

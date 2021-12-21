@@ -9,5 +9,10 @@
       "name": "org.hibernate.dialect.OracleDialect",
       "type": "java.lang.String",
       "description": "Description for org.hibernate.dialect.OracleDialect."
+    },
+    {
+      "name": "spring.jpa.hibernate.ddl-update",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.hibernate.ddl-update."
     }
   ] }

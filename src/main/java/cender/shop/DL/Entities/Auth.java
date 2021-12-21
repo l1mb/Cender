@@ -16,9 +16,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 
+@Table(name = "auth")
 public class Auth {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public long userId;

@@ -3,7 +3,7 @@ create table users(
 	                first_name varchar(255),
 	                last_name varchar(255),
 	                username varchar(15) not null,
-	                email varchar(255),
+	                email varchar2(255),
 	                registration_date date,
                     role varchar(15) default 'user',
                     constraint PK_users primary key (id)

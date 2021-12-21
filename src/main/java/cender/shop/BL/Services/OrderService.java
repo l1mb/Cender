@@ -38,12 +38,12 @@ public class OrderService {
         return new ServiceResultP<>(ServiceResultType.Success, result);
     }
 
-    public ServiceResultP<Order> updateExistingOrder(ExtendedOrderDto model) {
+    public ServiceResult updateExistingOrder(ExtendedOrderDto model) {
         var mapped = _modelMapper.map(model, Order.class);
         var existingOrder = _orderRepo.findById(mapped.getId()).get();
         existingOrder.count=mapped.count;
-        var result =  _orderRepo.update(mapped);
-        return new ServiceResultP<>(ServiceResultType.Success, result);
+        _orderRepo.update(Math.toIntExact(existingOrder.getId()), existingOrder.count, existingOrder.createOrderDate, existingOrder.updateOrderDate);
+        return new ServiceResult(ServiceResultType.Success);
     }
 
     public ServiceResult deleteOrder(Long[] id) {

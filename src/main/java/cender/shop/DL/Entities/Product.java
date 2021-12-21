@@ -4,8 +4,7 @@ import cender.shop.DL.Enums.GuitarType;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,6 +14,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "products")
+
 public class Product  {
     public String name;
     public String description;
@@ -24,13 +25,14 @@ public class Product  {
     public Date creationDate;
     public double price;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

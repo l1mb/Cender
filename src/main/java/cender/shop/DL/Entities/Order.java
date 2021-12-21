@@ -4,8 +4,7 @@ import cender.shop.DL.Enums.OrderStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,20 +15,23 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "orders")
 public class Order  {
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     public int userId;
     public OrderStatus status;
     public Date createOrderDate;
     public Date updateOrderDate;
     public int productId;
     public int count;
-    private Long id;
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

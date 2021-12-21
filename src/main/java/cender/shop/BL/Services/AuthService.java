@@ -3,12 +3,10 @@ package cender.shop.BL.Services;
 import cender.shop.BL.Enums.ServiceResultType;
 import cender.shop.BL.Utilities.*;
 import cender.shop.DL.Entities.Auth;
-import cender.shop.DL.Entities.Users.User;
 import cender.shop.DL.Repositories.AuthRepository;
 import cender.shop.DL.Repositories.UserRepository;
 import cender.shop.PL.DTO.User.UserDto;
 import cender.shop.PL.DTO.User.loginUserDto;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -68,18 +66,18 @@ public class AuthService {
     }
 
     @Transactional
-    public ServiceResultP<User> signUp(UserDto userDto) throws NoSuchAlgorithmException {
-        var createdUser = _userService.createUser(userDto);
+    public ServiceResult signUp(UserDto userDto) throws NoSuchAlgorithmException {
+        var createdUser = _userService.register(userDto);
+        var userId = _userRepository.getByLogin(userDto.email);
         var salt  = Hash.getSalt();
-        var auth =new Auth (Math.toIntExact(createdUser.getId()), Hash.toHex(Hash.getSaltedHash(userDto.password, salt)), salt);
+        var auth =new Auth (Math.toIntExact(userId.getId()), Hash.toHex(Hash.getSaltedHash(userDto.password, salt)), salt);
 
-        // todo salt type should be varbinaryhelicopter255
         auth.token = _emailService.generateToken();
         var link = "http://localhost:1498/api/email-confirm?token="+ auth.token;
         var message = EmailBuilder.buildEmail(userDto.username, link);
         _emailService.send(userDto.email, message);
-        _authRepository.createAuth(auth);
-        return new ServiceResultP<>(ServiceResultType.Success, createdUser);
+        _authRepository.createAuth((int) auth.userId, auth.hash, auth.salt, auth.tokenExpirationDate, auth.token);
+        return new ServiceResult(ServiceResultType.Success);
     }
 
     public String getHash(Long id) {

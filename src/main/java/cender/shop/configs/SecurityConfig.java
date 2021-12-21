@@ -49,11 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/api/auth",
+                        "/api/auth/sign-up",
+                        "/api/auth/sign-in",
                         "/api/GetGamesByPage",
                         "/api/get-pages-amount",
                         "/api/register",
-                        "/api/login"
+                        "/api/user/sign-up",
+                        "/api/user/sign-in"
                 )
                 .permitAll()
                 .antMatchers(

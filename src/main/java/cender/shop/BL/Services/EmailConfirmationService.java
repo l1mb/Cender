@@ -58,7 +58,7 @@ public class EmailConfirmationService implements EmailSender {
             return new ServiceResult(ServiceResultType.InvalidData, "Token has expired");
         }
         auth.emailConfirmed=true;
-        _authRepository.updateAuth(auth);
+        _authRepository.updateAuth(Math.toIntExact(auth.getId()), auth.hash, auth.salt,auth.emailConfirmed?1:0);
         return new ServiceResult(ServiceResultType.Success);
     }
 

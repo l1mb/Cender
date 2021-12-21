@@ -15,10 +15,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 
+@Service
 public class UserService implements UserDetailsService {
 
     @Autowired
@@ -30,15 +34,20 @@ public class UserService implements UserDetailsService {
     @Autowired
     AuthRepository _authRepository;
 
-    @Autowired
+    final
     ModelMapper _modelMapper;
 
-    @Autowired
+    final
     BCryptPasswordEncoder _crypt;
+
+    public UserService(BCryptPasswordEncoder _crypt, ModelMapper _modelMapper) {
+        this._crypt = _crypt;
+        this._modelMapper = _modelMapper;
+    }
 
 
     public ServiceResult login(loginUserDto loginModel){
-        var user = userRepository.getByEmail(loginModel.email);
+        var user = userRepository.getByLogin(loginModel.email);
 
         if (user == null){
             return new ServiceResult(ServiceResultType.InvalidData, "User doesn't exists");
@@ -50,15 +59,20 @@ public class UserService implements UserDetailsService {
                 new ServiceResult(ServiceResultType.Success, "User authorized");
     }
 
-    public ServiceResult register(UserDto info){
-        var user = _modelMapper.map(info, User.class);
-        userRepository.save(user);
+    public ServiceResult register(UserDto info) {
+        var user = convertDtoToUser(info);
+        user.registrationDate = Date.from(Instant.now());
+        user.firstName="salt";
+        user.lastName="sool";
+
+        createUser(user);
+
         return new ServiceResult(ServiceResultType.Success, "User registered");
     }
 
 
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return userRepository.getByEmail(login);
+        return userRepository.getByLogin(login);
     }
 
     public User getUserByLogin(String login){return userRepository.getByLogin(login);}
@@ -67,20 +81,33 @@ public class UserService implements UserDetailsService {
         var user = getUserByLogin(login);
         user.email = castedUser.email;
         user.username = castedUser.username;
-        userRepository.save(user);
+        userRepository.updateUser(Math.toIntExact(user.getId()), user.email, user.firstName, user.lastName, user.username, user.registrationDate);
         return user;
     }
 
-    public Auth updatePassword(String login, String password) throws NoSuchAlgorithmException {
+    //TODO: cloudinary
+    //todo need to add this thing
+    public ServiceResult updatePassword(String login, String password) throws NoSuchAlgorithmException {
         var user = getUserByLogin(login);
-        var auth = _authRepository.findByUseId(user.getId());
-        auth.hash= Arrays.toString(Hash.getSaltedHash(password, Hash.getSalt()));
-        return _authRepository.save(auth);
+        var auth = _authRepository.findByUserId(user.getId());
+        var salt = Hash.getSalt();
+        auth.hash= Hash.toHex(Hash.getSaltedHash(password, salt));
+        auth.salt = salt;
+        _authRepository.updateAuth(Math.toIntExact(auth.getId()),auth.hash, auth.salt, auth.emailConfirmed?1:0);
+        return new ServiceResult(ServiceResultType.Success);
     }
 
-    public User createUser(UserDto userDto) {
-        var mapped = _modelMapper.map(userDto, User.class);
-        var user = userRepository.save(mapped);
-        return user;
+    public ServiceResult createUser(User mapped) {
+        userRepository.createUser(mapped.email, mapped.firstName, mapped.lastName, mapped.username);
+        return new ServiceResult(ServiceResultType.Success);
     }
+
+    public User convertDtoToUser(UserDto userDto){
+        var us = new User();
+        us.username=userDto.username;
+        us.email = userDto.email;
+        return us;
+    }
+
+
 }

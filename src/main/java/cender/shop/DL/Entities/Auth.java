@@ -1,30 +1,31 @@
 package cender.shop.DL.Entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 
-@Table(name="Auth")
+@Table(name = "auth")
 public class Auth {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id()
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public long userId;
     public String hash;
 
-    public String salt;
+    public byte[] salt;
 
     public boolean emailConfirmed;
 
@@ -40,11 +41,24 @@ public class Auth {
     }
 
 
-    public Auth(int id, String hsh, String salt){
+    public Auth(int id, String hsh, byte[] salt){
         this.userId = id;
         this.hash = hsh;
         this.salt = salt;
         this.emailConfirmed = false;
         tokenExpirationDate = Date.from(LocalDate.now().plusDays(7).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Auth auth = (Auth) o;
+        return id != null && Objects.equals(id, auth.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

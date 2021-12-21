@@ -23,15 +23,13 @@ public class OrderService {
 
     @Autowired
     private ModelMapper _modelMapper;
+    @Autowired
     private UserRepository _userRepo;
 
     public OrderService(){
 
     }
 
-    public String returnMessage(){
-        return _orderRepo.returnMessage();
-    }
 
 
     public ServiceResultP<Order> createOrder(BasicOrderDto model) {
@@ -40,12 +38,12 @@ public class OrderService {
         return new ServiceResultP<>(ServiceResultType.Success, result);
     }
 
-    public ServiceResultP<Order> updateExistingOrder(ExtendedOrderDto model) {
+    public ServiceResult updateExistingOrder(ExtendedOrderDto model) {
         var mapped = _modelMapper.map(model, Order.class);
         var existingOrder = _orderRepo.findById(mapped.getId()).get();
         existingOrder.count=mapped.count;
-        var result =  _orderRepo.update(mapped);
-        return new ServiceResultP<>(ServiceResultType.Success, result);
+        _orderRepo.update(Math.toIntExact(existingOrder.getId()), existingOrder.count, existingOrder.createOrderDate, existingOrder.updateOrderDate);
+        return new ServiceResult(ServiceResultType.Success);
     }
 
     public ServiceResult deleteOrder(Long[] id) {
@@ -61,13 +59,13 @@ public class OrderService {
     public List<Order> getCompletedOrders(String login){
         var userId = _userRepo.getByLogin(login).getId();
 
-        return _orderRepo.findCompletedByUserId(userId);
+        return (List<Order>) _orderRepo.findCompletedByUserId(userId);
     }
 
     public List<Order> getOrdersByUserId(int id) {
         // todo implement
         var orders = _orderRepo.findByUserId((long) id);
-        return orders;
+        return (List<Order>) orders;
     }
     public Order getOrdersById(Long id) {
         var order = _orderRepo.findById(id);

@@ -6,7 +6,10 @@ import cender.shop.BL.Services.OrderService;
 import cender.shop.DL.Entities.Users.User;
 import cender.shop.PL.DTO.User.UserDto;
 import cender.shop.PL.DTO.User.loginUserDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +35,15 @@ public class AuthController {
     ///  <returns>Returns a new user from database</returns>
     ///  <response code="201">Returns the newly created item</response>
     ///  <response code="400">If the item is null</response>
-    @PostMapping("sign-up")
-    public User SignUp(@ModelAttribute UserDto userModel) throws NoSuchAlgorithmException {
+
+    @PostMapping("/sign-up")
+    @ApiResponse(responseCode = "200")
+    @Operation(description = "Creates a new user")
+    public ResponseEntity SignUp(@RequestBody UserDto userModel) throws NoSuchAlgorithmException {
         var result = _authService.signUp(userModel);
 
 
-        return result.Data;
+        return ResponseEntity.ok().build();
     }
 
     ///  <summary>

@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .permitAll()
                 .antMatchers(
-                                "/api/get-game-by-id",
+                                "/api/get-product-by-id",
                                 "/api/get-user-orders",
                                 "/api/create-order"
                 )

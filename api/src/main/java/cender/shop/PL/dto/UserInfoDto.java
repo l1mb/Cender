@@ -1,6 +1,6 @@
-package com.example.lab1.dto;
+package cender.shop.PL.dto;
 
-import com.example.lab1.model.Role;
+import cender.shop.DL.Entities.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 

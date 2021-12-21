@@ -1,21 +1,17 @@
-package cender.shop;
+package src.main.java.cender.shop.shop;
 
-import cender.shop.BL.Enums.ServiceResultType;
-import cender.shop.BL.Services.UserService;
-import cender.shop.BL.Utilities.ServiceResult;
-import cender.shop.DL.Entities.Product;
-import cender.shop.DL.Entities.Users.User;
-import cender.shop.DL.Repositories.UserRepository;
-import cender.shop.PL.DTO.User.UserDto;
-import cender.shop.PL.DTO.User.loginUserDto;
+import src.main.java.cender.shop.shop.BL.Enums.ServiceResultType;
+import src.main.java.cender.shop.shop.BL.Services.UserService;
+import src.main.java.cender.shop.shop.DL.Entities.Product;
+import src.main.java.cender.shop.shop.DL.Entities.Users.User;
+import src.main.java.cender.shop.shop.PL.DTO.User.UserDto;
+import src.main.java.cender.shop.shop.PL.DTO.User.loginUserDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;

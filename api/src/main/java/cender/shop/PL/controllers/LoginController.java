@@ -1,13 +1,11 @@
-package com.example.lab1.controllers;
+package cender.shop.PL.controllers;
 
-import com.example.lab1.aop.LogAnnotation;
-import com.example.lab1.dto.UserInfoDto;
-import com.example.lab1.dto.UserLoginDto;
-import com.example.lab1.model.User;
-import com.example.lab1.services.ServiceCode;
-import com.example.lab1.services.ServiceResult;
-import com.example.lab1.services.UserService;
-import com.example.lab1.utils.Jwt;
+import cender.shop.BL.Services.ServiceCode;
+import cender.shop.BL.Services.ServiceResult;
+import cender.shop.BL.Services.UserService;
+import cender.shop.BL.Utilities.Jwt;
+import cender.shop.PL.dto.UserInfoDto;
+import cender.shop.PL.dto.UserLoginDto;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +48,13 @@ public class LoginController {
     public ResponseEntity getUser(@RequestHeader("Authorization") String token){
         try {
             String login = jwt.getLoginFromToken(token.substring(7));
-            User user = userService.getUserByLogin(login);
+            var user = userService.getUserByLogin(login);
 
             if (user == null) {
                 return ResponseEntity.badRequest().build();
             }
 
-            UserInfoDto ret = new UserInfoDto();
+            var ret = new UserInfoDto();
             ret.setLogin(user.getLogin());
             ret.setName(user.getName());
             ret.setRoles(user.getRoles());

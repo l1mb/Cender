@@ -1,41 +1,41 @@
-package com.example.lab1.services;
+package cender.shop.BL.Services;
 
-import com.example.lab1.dto.vendorDeleteDto;
-import com.example.lab1.dto.vendorDto;
-import com.example.lab1.model.vendor;
-import com.example.lab1.repos.vendorRepository;
+import cender.shop.DL.Entities.Vendor;
+import cender.shop.DL.Repositories.VendorRepository;
+import cender.shop.PL.dto.VendorDeleteDto;
+import cender.shop.PL.dto.VendorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class vendorservice {
+public class VendorService {
 
     @Autowired
-    vendorRepository vendorRepository;
+    VendorRepository vendorRepository;
 
-    public ServiceResult addvendor(vendorDto info){
-        vendorRepository.addvendor(info.getvendorName());
+    public ServiceResult addVendor(VendorDto info){
+        vendorRepository.addVendor(info.getVendorName());
         return new ServiceResult(ServiceCode.CREATED, "vendor successfully added");
     }
 
-    public Iterable<vendor> getvendors(){
-        return vendorRepository.getvendors();
+    public Iterable<Vendor> getVendors(){
+        return vendorRepository.getVendors();
     }
 
-    public Iterable<vendor> getvendorsByPageNumber(int page, int size) {return vendorRepository.getvendorsByPageNumber(page, size);}
+    public Iterable<Vendor> getVendorsByPageNumber(int page, int size) {return vendorRepository.getVendorsByPageNumber(page, size);}
 
-    public int getvendorsCount() {return vendorRepository.getvendorCount();}
+    public int getVendorsCount() {return vendorRepository.getVendorCount();}
 
-    public vendor getById(Long id) {return vendorRepository.getById(id);}
+    public Vendor getById(Long id) {return vendorRepository.getById(id);}
 
-    public ServiceResult editvendor(vendor info){
-        vendorRepository.editvendor(info.getId(), info.getvendorName());
+    public ServiceResult editVendor(Vendor info){
+        vendorRepository.editVendor(info.getId(), info.getVendorName());
 
         return new ServiceResult(ServiceCode.OK, "product successfully edited");
     }
 
-    public ServiceResult deletevendor(vendorDeleteDto info){
-        vendorRepository.deletevendor(info.getId());
+    public ServiceResult deleteVendor(VendorDeleteDto info){
+        vendorRepository.deleteVendor(info.getId());
 
         return new ServiceResult(ServiceCode.OK, "product successfully deleted");
     }

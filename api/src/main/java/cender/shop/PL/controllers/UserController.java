@@ -1,11 +1,10 @@
-package com.example.lab1.controllers;
+package cender.shop.PL.controllers;
 
-import com.example.lab1.aop.LogAnnotation;
-import com.example.lab1.dto.productOrderInfoDto;
-import com.example.lab1.dto.OrderInfoDto;
-import com.example.lab1.model.User;
-import com.example.lab1.services.UserService;
-import com.example.lab1.utils.Jwt;
+import cender.shop.BL.Services.UserService;
+import cender.shop.BL.Utilities.Jwt;
+import cender.shop.DL.Entities.User;
+import cender.shop.PL.dto.OrderInfoDto;
+import cender.shop.PL.dto.productOrderInfoDto;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class UserController {
 
             OrderInfoDto info = new OrderInfoDto();
             info.setOrderId(orderId);
-            info.setproducts(products.toArray(new productOrderInfoDto[products.size()]));
+            info.setProducts(products.toArray(new productOrderInfoDto[products.size()]));
 
             return ResponseEntity.ok(info);
         } catch(Exception ex){

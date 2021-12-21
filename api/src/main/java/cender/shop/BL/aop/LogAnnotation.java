@@ -1,4 +1,4 @@
-package com.example.lab1.aop;
+package cender.shop.BL.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

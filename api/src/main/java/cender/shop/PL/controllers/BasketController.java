@@ -1,14 +1,13 @@
-package com.example.lab1.controllers;
+package cender.shop.PL.controllers;
 
-import com.example.lab1.aop.LogAnnotation;
-import com.example.lab1.dto.CreateOrderDto;
-import com.example.lab1.email.EmailService;
-import com.example.lab1.model.product;
-import com.example.lab1.model.User;
-import com.example.lab1.repos.UsersRepository;
-import com.example.lab1.services.ServiceCode;
-import com.example.lab1.services.ServiceResult;
-import com.example.lab1.services.UserService;
+import cender.shop.BL.Services.ServiceCode;
+import cender.shop.BL.Services.ServiceResult;
+import cender.shop.BL.Services.UserService;
+import cender.shop.BL.email.EmailService;
+import cender.shop.DL.Entities.Product;
+import cender.shop.DL.Entities.User;
+import cender.shop.DL.Repositories.UsersRepository;
+import cender.shop.PL.dto.CreateOrderDto;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +45,8 @@ public class BasketController {
 
             float total = 0;
 
-            for (int i = 0; i < order.getproducts().length; i++) {
-                total += order.getproducts()[i].getPrice();
+            for (int i = 0; i < order.getProducts().length; i++) {
+                total += order.getProducts()[i].getPrice();
             }
 
             ServiceResult result1 = userService.createOrder(user.getId(), total);
@@ -58,14 +57,14 @@ public class BasketController {
 
             int orderId = userService.getLastOrderId(user.getId());
 
-            ServiceResult result2 = userService.addproductsToOrder(orderId, order.getproducts());
+            ServiceResult result2 = userService.addproductsToOrder(orderId, order.getProducts());
 
             if (result2.id == ServiceCode.BAD_REQUEST) {
                 return ResponseEntity.badRequest().build();
             }
 
             try {
-                emailService.send(order.getUserEmail(), buildMessage(order.getproducts(), user.getName(), total));
+                emailService.send(order.getUserEmail(), buildMessage(order.getProducts(), user.getName(), total));
             } catch (Exception e) {
                 return ResponseEntity.badRequest().build();
             }
@@ -76,12 +75,12 @@ public class BasketController {
         }
     }
 
-    private String buildMessage(product[] products, String userName, float total){
+    private String buildMessage(Product[] products, String userName, float total){
         String out = "Thanks for your order!<br><br>" +
                 "Dear, " + userName + ", here's the list of products you purchased:<br><br>" +
                 "============================================<br>";
         for (int i = 0; i < products.length; i++) {
-            product product = products[i];
+            Product product = products[i];
             out += i + 1 + ": " + product.getTitle() + " (" + product.getRating() + ") -> " + product.getPrice() + "$<br>";
         }
 

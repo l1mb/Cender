@@ -1,4 +1,4 @@
-package com.example.lab1.Exceptions;
+package cender.shop.BL.Exceptions;
 
 public class MyException extends Exception{
     public MyException(String message){

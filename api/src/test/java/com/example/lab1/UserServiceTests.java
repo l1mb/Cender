@@ -1,10 +1,9 @@
 package com.example.lab1;
 
-import com.example.lab1.dto.productOrderInfoDto;
-import com.example.lab1.model.product;
-import com.example.lab1.repos.productsRepository;
-import com.example.lab1.repos.UsersRepository;
-import com.example.lab1.services.UserService;
+import cender.shop.BL.Services.UserService;
+import cender.shop.DL.Entities.Product;
+import cender.shop.DL.Repositories.ProductsRepository;
+import cender.shop.DL.Repositories.UsersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -25,7 +23,7 @@ public class UserServiceTests {
     UsersRepository usersRepository;
 
     @Mock
-    productsRepository productsRepository;
+    ProductsRepository productsRepository;
 
     @InjectMocks
     UserService userService;
@@ -33,11 +31,11 @@ public class UserServiceTests {
     @Test
     void getUserOrderproducts_ShouldReturnArrayList_Positive(){
         ArrayList<Integer> expectedIds = new ArrayList<>(4);
-        product expectedproduct = new product();
-        ArrayList<productOrderInfoDto> expectedResult = new ArrayList<>();
+        var expectedproduct = new Product();
+        var expectedResult = new ArrayList<>();
 
         lenient().when(usersRepository.getUserOrderproductsIds(1L, 1L)).thenReturn(expectedIds);
-        lenient().when(productsRepository.getproductById(1L)).thenReturn(expectedproduct);
+        lenient().when(productsRepository.getProductById(1L)).thenReturn(expectedproduct);
 
         var actual = userService.getUserOrderproducts(1L, 1L);
         assertThat(actual).isEqualTo(expectedResult);

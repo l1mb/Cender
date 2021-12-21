@@ -1,5 +1,6 @@
-package com.example.lab1.dto;
+package cender.shop.PL.dto;
 
+import cender.shop.PL.dto.productOrderInfoDto;
 import lombok.Data;
 
 @Data

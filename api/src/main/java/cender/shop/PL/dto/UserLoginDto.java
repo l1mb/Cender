@@ -1,4 +1,4 @@
-package com.example.lab1.dto;
+package cender.shop.PL.dto;
 
 import lombok.Data;
 

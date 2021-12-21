@@ -7,7 +7,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ProductDto {
+@AllArgsConstructor
+public class productEditDto {
 
     @NotBlank
     @NotNull
@@ -22,13 +23,7 @@ public class ProductDto {
     @NotNull
     public String productDescription;
 
-    public float price;
+    public Long id;
 
-    public ProductDto(String title, String vendor, String rating, String productDescription, float price){
-        this.title = title;
-        this.vendor = vendor;
-        this.rating = rating;
-        this.productDescription = productDescription;
-        this.price = price;
-    }
+    public float price;
 }

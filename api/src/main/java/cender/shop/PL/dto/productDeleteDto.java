@@ -3,6 +3,7 @@ package cender.shop.PL.dto;
 import lombok.Data;
 
 @Data
-public class VendorDeleteDto {
-    private Long id;
+public class productDeleteDto {
+
+    public Long id;
 }

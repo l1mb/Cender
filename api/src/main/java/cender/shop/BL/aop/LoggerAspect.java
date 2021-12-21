@@ -1,4 +1,4 @@
-package com.example.lab1.aop;
+package cender.shop.BL.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

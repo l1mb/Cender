@@ -1,13 +1,12 @@
 package cender.shop.DL.Repositories;
 
-import cender.shop.DL.Entities.Order;
+import src.main.java.cender.shop.shop.DL.Entities.Order;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {

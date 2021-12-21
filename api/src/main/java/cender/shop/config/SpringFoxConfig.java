@@ -1,4 +1,4 @@
-package com.example.lab1.config;
+package cender.shop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

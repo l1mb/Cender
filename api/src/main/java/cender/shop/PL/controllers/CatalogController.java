@@ -1,8 +1,8 @@
-package com.example.lab1.controllers;
+package cender.shop.PL.controllers;
 
-import com.example.lab1.aop.LogAnnotation;
-import com.example.lab1.model.product;
-import com.example.lab1.services.productService;
+import cender.shop.BL.Services.ProductService;
+import cender.shop.BL.aop.LogAnnotation;
+import cender.shop.DL.Entities.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,58 +19,58 @@ import java.util.ArrayList;
 public class CatalogController {
 
     @Autowired
-    productService productService;
+    ProductService ProductService;
 
     @LogAnnotation
     @ApiResponse(code = 200,response = ResponseEntity.class, message = "OK")
-    @Operation(description = "Returns a list of products by requested page number and page size")
-    @GetMapping(value = "/api/GetproductsByPage")
+    @Operation(description = "Returns a list of Products by requested page number and page size")
+    @GetMapping(value = "/api/GetProductsByPage")
     public ResponseEntity<?> catalog(int page, int size, String title, String sort, int priceFrom, int priceTo, boolean rating18) throws IOException {
         try {
-            ArrayList<product> products = new ArrayList<>();
+            ArrayList<Product> Products = new ArrayList<>();
 
             if (title == "") {
-                products = productService.getproductsByPageNumber(page, size, null);
+                Products = ProductService.getProductsByPageNumber(page, size, null);
             } else {
-                products = productService.getproductsByPageNumber(page, size, title);
+                Products = ProductService.getProductsByPageNumber(page, size, title);
             }
 
-            if (products == null) {
+            if (Products == null) {
                 return (ResponseEntity<?>) ResponseEntity.badRequest();
             }
 
             switch (sort) {
                 case "priceAsc":
-                    products.sort(product.PRICE_ASCENDING_COMPARATOR);
+                    Products.sort(Product.PRICE_ASCENDING_COMPARATOR);
                     break;
                 case "priceDesc":
-                    products.sort(product.PRICE_DESCENDING_COMPARATOR);
+                    Products.sort(Product.PRICE_DESCENDING_COMPARATOR);
                     break;
                 case "titleAsc":
-                    products.sort(product.TITLE_ASCENDING_COMPARATOR);
+                    Products.sort(Product.TITLE_ASCENDING_COMPARATOR);
                     break;
                 case "titleDesc":
-                    products.sort(product.TITLE_DESCENDING_COMPARATOR);
+                    Products.sort(Product.TITLE_DESCENDING_COMPARATOR);
                     break;
             }
 
-            ArrayList<product> out_products = new ArrayList<>();
+            ArrayList<Product> out_Products = new ArrayList<>();
 
-            for (product product : products) {
+            for (Product Product : Products) {
                 if (rating18) {
-                    if (product.getPrice() >= priceFrom && product.getPrice() <= priceTo) {
-                        out_products.add(product);
+                    if (Product.getPrice() >= priceFrom && Product.getPrice() <= priceTo) {
+                        out_Products.add(Product);
                     }
-                } else if (!product.getRating().equals("18+")) {
-                    if (product.getPrice() >= priceFrom && product.getPrice() <= priceTo) {
-                        out_products.add(product);
+                } else if (!Product.getRating().equals("18+")) {
+                    if (Product.getPrice() >= priceFrom && Product.getPrice() <= priceTo) {
+                        out_Products.add(Product);
                     }
                 }
             }
 
             StringWriter writer = new StringWriter();
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(writer, out_products);
+            mapper.writeValue(writer, out_Products);
 
             return ResponseEntity.ok(writer.toString());
         } catch(Exception ex){

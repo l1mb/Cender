@@ -1,8 +1,8 @@
-package com.example.lab1.filters;
+package cender.shop.BL.filters;
 
-import com.example.lab1.Exceptions.MyException;
-import com.example.lab1.services.UserService;
-import com.example.lab1.utils.Jwt;
+import cender.shop.BL.Exceptions.MyException;
+import cender.shop.BL.Services.UserService;
+import cender.shop.BL.Utilities.Jwt;
 import io.jsonwebtoken.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 userName = jwt.getLoginFromToken(token);
             } catch (MyException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
 

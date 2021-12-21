@@ -1,4 +1,4 @@
-package com.example.lab1.email;
+package cender.shop.BL.email;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

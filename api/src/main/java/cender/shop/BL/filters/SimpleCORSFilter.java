@@ -1,4 +1,4 @@
-package com.example.lab1.filters;
+package cender.shop.BL.filters;
 
 import org.springframework.stereotype.Component;
 

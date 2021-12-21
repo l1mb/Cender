@@ -1,7 +1,7 @@
 package cender.shop.BL.Utilities;
 
+import cender.shop.BL.Exceptions.MyException;
 import cender.shop.BL.Services.UserService;
-import cender.shop.BL.Utilities.JWT;
 import io.jsonwebtoken.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
-    public JWT jwt;
+    public Jwt jwt;
     @Autowired
     public UserService userService;
 
@@ -33,7 +33,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(null != authorization && authorization.startsWith("Bearer ")) {
             token = authorization.substring(7);
-            userName = jwt.getLoginFromToken(token);
+            try {
+                userName = jwt.getLoginFromToken(token);
+            } catch (MyException e) {
+                e.printStackTrace();
+            }
         }
 
         if(null != userName && SecurityContextHolder.getContext().getAuthentication() == null) {

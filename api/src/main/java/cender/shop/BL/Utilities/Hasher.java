@@ -1,4 +1,4 @@
-package com.example.lab1.utils;
+package cender.shop.BL.Utilities;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

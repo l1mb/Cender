@@ -1,10 +1,10 @@
-package com.example.lab1.dto;
+package cender.shop.PL.dto;
 
-import com.example.lab1.model.product;
+import cender.shop.DL.Entities.Product;
 import lombok.Data;
 
 @Data
 public class CreateOrderDto {
-    private product[] products;
+    private Product[] products;
     private String userEmail;
 }

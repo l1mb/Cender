@@ -1,11 +1,8 @@
 package com.example.lab1;
 
-import com.example.lab1.model.product;
-import com.example.lab1.model.vendor;
-import com.example.lab1.repos.productsRepository;
-import com.example.lab1.repos.vendorRepository;
-import com.example.lab1.services.productService;
-import com.example.lab1.services.vendorservice;
+import cender.shop.BL.Services.VendorService;
+import cender.shop.DL.Entities.Vendor;
+import cender.shop.DL.Repositories.VendorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,17 +17,17 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class vendorserviceTests {
+class VendorServiceTests {
     @Mock
-    vendorRepository vendorRepository;
+    VendorRepository vendorRepository;
 
     @InjectMocks
-    vendorservice vendorservice;
+    VendorService vendorservice;
 
     @Test
     void getById_ShouldReturnvendor_Positive(){
         long id = 2;
-        vendor expected = new vendor(id, "Test");
+        var expected = new Vendor(id, "Test");
         when(vendorRepository.getById(id)).thenReturn(expected);
         var actual = vendorservice.getById(id);
         assertThat(expected).isEqualTo(actual);
@@ -38,9 +35,9 @@ class vendorserviceTests {
 
     @Test
     void getvendors_ShouldReturnIterable_Positive(){
-        Iterable<vendor> expected = new ArrayList<vendor>(4);
-        when(vendorRepository.getvendors()).thenReturn(expected);
-        var actual = vendorservice.getvendors();
+        var expected = new ArrayList<Vendor>(4);
+        when(vendorRepository.getVendors()).thenReturn(expected);
+        var actual = vendorservice.getVendors();
         assertThat(actual).isEqualTo(expected);
     }
 }

@@ -1,7 +1,7 @@
-package com.example.lab1.config;
+package cender.shop.config;
 
-import com.example.lab1.filters.JwtFilter;
-import com.example.lab1.services.UserService;
+import cender.shop.BL.Services.UserService;
+import cender.shop.BL.filters.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,13 +1,13 @@
-package com.example.lab1.services;
+package cender.shop.BL.Services;
 
-import com.example.lab1.dto.productOrderInfoDto;
-import com.example.lab1.dto.UserLoginDto;
-import com.example.lab1.dto.UserRegisterDto;
-import com.example.lab1.model.product;
-import com.example.lab1.model.User;
-import com.example.lab1.repos.productsRepository;
-import com.example.lab1.repos.UsersRepository;
-import com.example.lab1.utils.Hasher;
+import cender.shop.BL.Utilities.Hasher;
+import cender.shop.DL.Entities.Product;
+import cender.shop.DL.Entities.User;
+import cender.shop.DL.Repositories.ProductsRepository;
+import cender.shop.DL.Repositories.UsersRepository;
+import cender.shop.PL.dto.UserLoginDto;
+import cender.shop.PL.dto.UserRegisterDto;
+import cender.shop.PL.dto.productOrderInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -26,10 +25,10 @@ public class UserService implements UserDetailsService {
     UsersRepository usersRepository;
 
     @Autowired
-    productsRepository productsRepository;
+    ProductsRepository productsRepository;
 
     public ServiceResult login(UserLoginDto info){
-        User user = usersRepository.getByLogin(info.login);
+        var user = usersRepository.getByLogin(info.login);
 
         if (user == null){
             return new ServiceResult(ServiceCode.BAD_REQUEST, "User doesn't exists");
@@ -43,13 +42,13 @@ public class UserService implements UserDetailsService {
     }
 
     public ServiceResult register(UserRegisterDto info){
-        User check = usersRepository.getByLogin(info.login);
+        var check = usersRepository.getByLogin(info.login);
 
         if (check != null){
             return new ServiceResult(ServiceCode.BAD_REQUEST, "Email already taken");
         }
 
-        User user = new User();
+        var user = new User();
         try{
             byte[] salt = Hasher.getSalt();
             byte[] hashedPassword = Hasher.getSaltedHash(info.password, salt);
@@ -66,8 +65,8 @@ public class UserService implements UserDetailsService {
         ArrayList<productOrderInfoDto> res = new ArrayList<>();
 
         for (int id : ids){
-            product product = productsRepository.getproductById((long) id);
-            res.add(new productOrderInfoDto(product.getTitle(), product.getvendor().getvendorName(),
+            var product = productsRepository.getProductById((long) id);
+            res.add(new productOrderInfoDto(product.getTitle(), product.getVendor().getVendorName(),
                     product.getRating(), product.getPrice()));
         }
 
@@ -84,10 +83,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public ServiceResult addproductsToOrder(int orderId, product[] products){
+    public ServiceResult addproductsToOrder(int orderId, Product[] products){
         try{
-            for (int i = 0; i < products.length; i++) {
-                usersRepository.addproductToOrder((long) orderId, products[i].getId());
+            for (Product product : products) {
+                usersRepository.addproductToOrder((long) orderId, product.getId());
             }
         } catch(Exception e){
             return new ServiceResult(ServiceCode.BAD_REQUEST, e.getMessage());

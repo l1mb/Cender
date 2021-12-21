@@ -1,4 +1,4 @@
-package com.example.lab1.email;
+package cender.shop.BL.email;
 
 public interface EmailSender {
     void send(String to, String email);

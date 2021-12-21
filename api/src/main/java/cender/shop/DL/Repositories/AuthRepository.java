@@ -1,6 +1,6 @@
 package cender.shop.DL.Repositories;
 
-import cender.shop.DL.Entities.Auth;
+import src.main.java.cender.shop.shop.DL.Entities.Auth;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;

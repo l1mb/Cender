@@ -1,15 +1,15 @@
 package com.example.lab1;
 
-import com.example.lab1.Exceptions.MyException;
-import com.example.lab1.dto.productDto;
-import com.example.lab1.model.product;
-import com.example.lab1.model.vendor;
-import com.example.lab1.repos.productsRepository;
-import com.example.lab1.repos.vendorRepository;
-import com.example.lab1.services.productService;
-import com.example.lab1.services.vendorservice;
-import com.example.lab1.services.ServiceCode;
-import com.example.lab1.services.ServiceResult;
+import cender.shop.BL.Exceptions.MyException;
+import cender.shop.BL.Services.ProductService;
+import cender.shop.BL.Services.ServiceCode;
+import cender.shop.BL.Services.ServiceResult;
+import cender.shop.BL.Services.VendorService;
+import cender.shop.DL.Entities.Product;
+import cender.shop.DL.Entities.Vendor;
+import cender.shop.DL.Repositories.ProductsRepository;
+import cender.shop.DL.Repositories.VendorRepository;
+import cender.shop.PL.dto.ProductDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,66 +25,66 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class productServiceTests {
+class ProductServiceTests {
     @Mock
-    productsRepository productsRepository;
+    ProductsRepository ProductsRepository;
 
     @Mock
-    vendorRepository vendorRepository;
+    VendorRepository VendorRepository;
 
     @InjectMocks
-    productService productsService;
+    ProductService ProductsService;
 
     @InjectMocks
-    vendorservice vendorservice;
+    VendorService Vendorservice;
 
     @Test
-    void addproduct_ShouldReturnServiceResult_Positive() throws MyException {
-        var expectedvendor = new vendor(1L,"Test");
-        var expectedResult = new ServiceResult(ServiceCode.CREATED, "product added");
+    void addProduct_ShouldReturnServiceResult_Positive() throws MyException {
+        var expectedVendor = new Vendor(1L,"Test");
+        var expectedResult = new ServiceResult(ServiceCode.CREATED, "Product added");
 
-        when(vendorRepository.findByName("Test")).thenReturn(expectedvendor);
-        doNothing().when(productsRepository).addNewproduct(1L, "asd", "18+", 12, "asd");
+        when(VendorRepository.findByName("Test")).thenReturn(expectedVendor);
+        doNothing().when(ProductsRepository).addNewProduct(1L, "asd", "18+", 12, "asd");
 
-        var actual = productsService.addproduct(new productDto("asd", "Test", "18+", "asd", 12));
+        var actual = ProductsService.addProduct(new ProductDto("asd", "Test", "18+", "asd", 12));
 
         assertThat(actual.id).isEqualTo(expectedResult.id);
     }
 
     @Test
-    void getproductById_ShouldReturnproduct_Positive(){
+    void getProductById_ShouldReturnProduct_Positive(){
         long id = 1337L;
-        product expected = new product("q", new vendor(), "asd", "18+", 10, id);
-        when(productsRepository.getproductById(id)).thenReturn(expected);
-        var actual = productsService.getproductById(id);
+        Product expected = new Product("q", new Vendor(), "asd", "18+", 10, id);
+        when(ProductsRepository.getProductById(id)).thenReturn(expected);
+        var actual = ProductsService.getProductById(id);
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void getproductsByPageNumber_ShouldReturnArrayList_Positive(){
+    void getProductsByPageNumber_ShouldReturnArrayList_Positive(){
         int page = 1;
         int size = 8;
 
-        ArrayList<product> expected = new ArrayList<product>(8);
-        when(productsRepository.getproductsByPageNumber(page, size, null)).thenReturn(expected);
-        var actual = productsService.getproductsByPageNumber(page, size, null);
+        ArrayList<Product> expected = new ArrayList<Product>(8);
+        when(ProductsRepository.getProductsByPageNumber(page, size, null)).thenReturn(expected);
+        var actual = ProductsService.getProductsByPageNumber(page, size, null);
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void getById_ShouldReturnvendor_Positive(){
+    void getById_ShouldReturnVendor_Positive(){
         long id = 2;
-        vendor expected = new vendor(id, "Test");
-        when(vendorRepository.getById(id)).thenReturn(expected);
-        var actual = vendorservice.getById(id);
+        Vendor expected = new Vendor(id, "Test");
+        when(VendorRepository.getById(id)).thenReturn(expected);
+        var actual = Vendorservice.getById(id);
         assertThat(expected).isEqualTo(actual);
     }
 
     @Test
-    void getvendors_ShouldReturnIterable_Positive(){
-        Iterable<vendor> expected = new ArrayList<vendor>(4);
-        when(vendorRepository.getvendors()).thenReturn(expected);
-        var actual = vendorservice.getvendors();
+    void getVendors_ShouldReturnIterable_Positive(){
+        Iterable<Vendor> expected = new ArrayList<Vendor>(4);
+        when(VendorRepository.getVendors()).thenReturn(expected);
+        var actual = Vendorservice.getVendors();
         assertThat(actual).isEqualTo(expected);
     }
 }

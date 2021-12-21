@@ -1,6 +1,6 @@
-package com.example.lab1.utils;
+package cender.shop.BL.Utilities;
 
-import com.example.lab1.Exceptions.MyException;
+import cender.shop.BL.Exceptions.MyException;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 

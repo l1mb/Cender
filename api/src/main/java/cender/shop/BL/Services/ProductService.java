@@ -1,13 +1,15 @@
-package com.example.lab1.services;
+package cender.shop.BL.Services;
 
-import com.example.lab1.Exceptions.MyException;
-import com.example.lab1.dto.productDeleteDto;
-import com.example.lab1.dto.productDto;
-import com.example.lab1.dto.productEditDto;
-import com.example.lab1.model.product;
-import com.example.lab1.model.vendor;
-import com.example.lab1.repos.productsRepository;
-import com.example.lab1.repos.vendorRepository;
+import cender.shop.BL.Exceptions.MyException;
+import cender.shop.BL.Services.ServiceCode;
+import cender.shop.BL.Services.ServiceResult;
+import cender.shop.DL.Entities.Product;
+import cender.shop.DL.Entities.Vendor;
+import cender.shop.DL.Repositories.VendorRepository;
+import cender.shop.DL.Repositories.ProductsRepository;
+import cender.shop.PL.dto.ProductDto;
+import cender.shop.PL.dto.productDeleteDto;
+import cender.shop.PL.dto.productEditDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +18,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class productService {
+public class ProductService {
     @Autowired
-    productsRepository productsRepository;
+    ProductsRepository ProductsRepository;
 
     @Autowired
-    vendorRepository vendorRepository;
+    VendorRepository vendorRepository;
 
     private final Pattern _pattern = Pattern.compile("\\d{2}\\+|\\d\\+");
 
-    public product getproductById(Long id) { return productsRepository.getproductById(id); }
+    public Product getProductById(Long id) { return ProductsRepository.getProductById(id); }
 
-    public ServiceResult addproduct(productDto info) throws MyException {
+    public ServiceResult addProduct(ProductDto info) throws MyException {
 
         try {
             Matcher matcher = _pattern.matcher(info.rating);
@@ -36,17 +38,17 @@ public class productService {
                 return new ServiceResult(ServiceCode.BAD_REQUEST, "Rating incorrect. Example: 18+");
             }
 
-            vendor vendor = vendorRepository.findByName(info.vendor);
+            Vendor vendor = vendorRepository.findByName(info.vendor);
 
-            productsRepository.addNewproduct(vendor.getId(), info.title, info.rating, info.price, info.productDescription);
+            ProductsRepository.addNewProduct(vendor.getId(), info.title, info.rating, info.price, info.productDescription);
 
-            return new ServiceResult(ServiceCode.CREATED, "product added");
+            return new ServiceResult(ServiceCode.CREATED, "Product added");
         } catch(Exception ex){
             throw new MyException(ex.getMessage());
         }
     }
 
-    public ServiceResult editproduct(productEditDto info){
+    public ServiceResult editProduct(productEditDto info){
 
         Matcher matcher = _pattern.matcher(info.rating);
 
@@ -54,34 +56,34 @@ public class productService {
             return new ServiceResult(ServiceCode.BAD_REQUEST, "Rating incorrect. Example: 18+");
         }
 
-        vendor vendor = vendorRepository.findByName(info.vendor);
+        Vendor vendor = vendorRepository.findByName(info.vendor);
 
-        productsRepository.updateproduct(info.id, vendor.getId(), info.title, info.rating, info.price, info.productDescription);
+        ProductsRepository.updateProduct(info.id, vendor.getId(), info.title, info.rating, info.price, info.productDescription);
 
-        return new ServiceResult(ServiceCode.CREATED, "product successfully edited");
+        return new ServiceResult(ServiceCode.CREATED, "Product successfully edited");
     }
 
-    public ServiceResult deleteproduct(productDeleteDto info){
-        productsRepository.deleteproduct(info.id);
+    public ServiceResult deleteProduct(productDeleteDto info){
+        ProductsRepository.deleteProduct(info.id);
 
-        return new ServiceResult(ServiceCode.OK, "product successfully deleted");
+        return new ServiceResult(ServiceCode.OK, "Product successfully deleted");
     }
 
 
-    public ArrayList<product> getproductsByPageNumber(int page, int size, String title){
+    public ArrayList<Product> getProductsByPageNumber(int page, int size, String title){
         if (title == null){
-            return (ArrayList<product>) productsRepository.getproductsByPageNumber(page, size, null);
+            return (ArrayList<Product>) ProductsRepository.getProductsByPageNumber(page, size, null);
         }
-        return (ArrayList<product>) productsRepository.getproductsByPageNumber(page, size, title);
+        return (ArrayList<Product>) ProductsRepository.getProductsByPageNumber(page, size, title);
     }
 
-    public Iterable<product> getproducts(){
-        return productsRepository.getproducts();
+    public Iterable<Product> getProducts(){
+        return ProductsRepository.getProducts();
     }
 
-    public int getproductsCount(){
-        return productsRepository.getproductsCount();
+    public int getProductsCount(){
+        return ProductsRepository.getProductsCount();
     }
 
-    public int getproductsByTitleCount(String title) {return productsRepository.getproductsByTitleCount(title);}
+    public int getProductsByTitleCount(String title) {return ProductsRepository.getProductsByTitleCount(title);}
 }

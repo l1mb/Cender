@@ -1,0 +1,16 @@
+.category {
+  width: 228px;
+  height: 56px;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 10px 20px;
+  border-radius: 4px;
+  background: rgba($color: black, $alpha: 0.7);
+  color: #fff;
+  padding: 0 10px;
+}
+
+.selected {
+  padding-bottom: 3px;
+  border-bottom: 3px solid #609ce4;
+}

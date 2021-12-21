@@ -1,0 +1,19 @@
+.filterContainer {
+  padding: 20px;
+
+  width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 0 3px white;
+
+  background: rgba($color: #000000, $alpha: 0.8);
+  color: white;
+  margin: 15px 20px;
+  .labels {
+    margin: 20px 0px 6px 0px;
+  }
+
+  .firstLabel {
+    text-align: center;
+    margin: 0px 0px 6px 0px;
+  }
+}

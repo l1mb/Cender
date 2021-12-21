@@ -1,0 +1,25 @@
+@import "../../homeComponent/shared.module.scss";
+
+.portalWrapper {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: $half-transparent-black;
+  display: flex;
+
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+
+  margin-top: min(90px);
+  margin-bottom: auto;
+  align-items: center;
+  justify-content: center;
+
+  width: 480px;
+  height: 480px;
+  background-color: white;
+}

@@ -1,0 +1,82 @@
+.extraDiv {
+  height: 100vh;
+  width: 100vw;
+  font-family: "Raleway", sans-serif;
+}
+.page_wrapper {
+  height: calc(100% - 164px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-image: url("../../assets/images/products.jpg");
+  background-repeat: no-repeat;
+  overflow-y: scroll;
+  background-size: cover;
+}
+
+.content {
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.header {
+  width: 70%;
+
+  text-align: center;
+  color: white;
+  margin: 36px 0 42px 0;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.contentRow {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 92px;
+
+  .pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pag_buttons {
+    display: flex;
+    list-style: none;
+    li {
+      background: #19191a;
+      padding: 8px;
+      margin: 8px;
+      a {
+        color: white;
+      }
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    li:hover {
+      background: #3d3d3d;
+      padding: 8px;
+    }
+  }
+
+  .pag_buttons a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}

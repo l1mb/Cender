@@ -1,0 +1,12 @@
+@import "../../homeComponent/shared.module.scss";
+
+.portalWrapper {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba($color: #000000, $alpha: 0.8);
+  display: flex;
+
+  justify-content: center;
+}

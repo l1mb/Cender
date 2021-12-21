@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BatsLogSettingState">
+    <option name="colorConfigs" value="[{&quot;backgroundColor&quot;:{&quot;b&quot;:152,&quot;g&quot;:204,&quot;r&quot;:41},&quot;enabled&quot;:true,&quot;foregroundColor&quot;:{&quot;b&quot;:255,&quot;g&quot;:255,&quot;r&quot;:255},&quot;id&quot;:&quot;1&quot;,&quot;keyWord&quot;:&quot;INSERT&quot;,&quot;sort&quot;:1},{&quot;backgroundColor&quot;:{&quot;b&quot;:255,&quot;g&quot;:147,&quot;r&quot;:118},&quot;enabled&quot;:true,&quot;foregroundColor&quot;:{&quot;b&quot;:255,&quot;g&quot;:255,&quot;r&quot;:255},&quot;id&quot;:&quot;2&quot;,&quot;keyWord&quot;:&quot;UPDATE&quot;,&quot;sort&quot;:2},{&quot;backgroundColor&quot;:{&quot;b&quot;:151,&quot;g&quot;:137,&quot;r&quot;:255},&quot;enabled&quot;:true,&quot;foregroundColor&quot;:{&quot;b&quot;:255,&quot;g&quot;:255,&quot;r&quot;:255},&quot;id&quot;:&quot;3&quot;,&quot;keyWord&quot;:&quot;DELETE&quot;,&quot;sort&quot;:3}]" />
+  </component>
+</project>

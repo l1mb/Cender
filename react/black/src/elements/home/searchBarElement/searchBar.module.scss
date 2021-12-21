@@ -1,0 +1,66 @@
+@import "../../../components/homeComponent/shared.module.scss";
+
+.bar {
+  background: transparent;
+  background-color: $half-transparent-black;
+
+  font-size: 16px;
+  opacity: 70%;
+
+  padding: 10px 12px;
+
+  border: 2px solid white;
+  border-radius: 10px;
+
+  color: white;
+}
+
+.bar::placeholder {
+  opacity: 1;
+  color: white;
+}
+
+.dropdown {
+  border-radius: 10px;
+  z-index: 1;
+  position: absolute;
+
+  top: 35px;
+  color: white;
+
+  list-style: none;
+
+  width: 100%;
+
+  padding: 6px 10px;
+
+  li {
+    padding: 6px 10px;
+  }
+
+  background-color: rgba($color: #000000, $alpha: 0.8);
+
+  hr {
+    margin: 2px;
+    border: none;
+    height: 1px;
+    background: red;
+  }
+
+  hr:last-child {
+    height: 0px;
+  }
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.createButton {
+  background: black;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+  color: white;
+}

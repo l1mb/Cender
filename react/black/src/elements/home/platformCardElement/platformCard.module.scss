@@ -1,0 +1,46 @@
+@import "../../../components/homeComponent/shared.module.scss";
+
+.cardWrapper {
+  img {
+    width: 128px;
+  }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin: auto;
+  margin-bottom: 24px;
+
+  span {
+    color: white;
+    text-align: center;
+  }
+
+  padding: 10px 20px;
+
+  border: 1.5px solid $border-white;
+  border-bottom: 4px solid $border-white;
+
+  border-radius: 10px;
+}
+
+.cardWrapper:hover {
+  animation: wrapperHover 2s forwards;
+}
+
+.cardWrapper:focus {
+  animation: wrapperHover 2s forwards;
+}
+
+@keyframes wrapperHover {
+  20% {
+    border: 1.5px solid red;
+    border-bottom: 4px solid red;
+  }
+
+  100% {
+    border: 1.5px solid red;
+    border-bottom: 4px solid red;
+  }
+}

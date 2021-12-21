@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="false" />
+    <value-preview-text-wrapping value="true" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -24,49 +24,16 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa">
-        <schema name="APPQOSSYS" object-types="table, view, materialized view, synonym" />
-        <schema name="AUDSYS" object-types="table, view, materialized view, synonym, package" />
-        <schema name="C##CDB_USER" object-types="table, view, materialized view, synonym" />
-        <schema name="CTXSYS" object-types="table, view, materialized view, synonym, package, type" />
-        <schema name="DVSYS" object-types="table, view, materialized view, synonym, procedure, function, package, type" />
-        <schema name="GSMADMIN_INTERNAL" object-types="table, view, materialized view, synonym" />
-        <schema name="LBACSYS" object-types="table, view, materialized view, synonym, procedure, function, package, type" />
-        <schema name="MDSYS" object-types="table, view, materialized view, synonym, sequence, procedure, function, package, type" />
-        <schema name="OJVMSYS" object-types="table, view, materialized view, synonym, sequence" />
-        <schema name="OLAPSYS" object-types="table, view, materialized view, synonym" />
-        <schema name="ORDDATA" object-types="table, view, materialized view, synonym" />
-        <schema name="ORDSYS" object-types="synonym, procedure, function, package, type" />
-        <schema name="PUBLIC" object-types="table, view, materialized view, synonym, sequence, procedure, function, package, type, package function, package procedure, package type, type function, type procedure" />
-        <schema name="SYS" object-types="table, view, materialized view, synonym, procedure, function, package, type, package type" />
-        <schema name="SYSTEM" object-types="table, view, materialized view, synonym, sequence, procedure, function, package, type, column, package function, package procedure, package type, type function, type procedure, argument" />
-        <schema name="WMSYS" object-types="table, view, materialized view, synonym, package, type" />
-        <schema name="XDB" object-types="table, view, materialized view, synonym, procedure, function, package, type, package type" />
-      </connection>
-    </loaded-nodes>
-  </component>
-  <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa">
-      <console name="Cursed" type="STANDARD" schema="SYSTEM" session="Main" />
-    </connection>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
-  </component>
-  <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
-  </component>
-  <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/database/procedures.sql" connection-id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa" session-id="MAIN" current-schema="SYSTEM" />
-    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/database/init.sql" connection-id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa" session-id="MAIN" current-schema="SYSTEM" />
-    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/database/data.sql" connection-id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa" session-id="MAIN" current-schema="SYSTEM" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
@@ -87,97 +54,10 @@
     <diagnostics-history />
   </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces>
-      <mapping database-type="ORACLE" interface-id="DEFAULT" />
-    </recently-used-interfaces>
+    <recently-used-interfaces />
   </component>
   <component name="DBNavigator.Project.Settings">
-    <connections>
-      <connection id="9b1d5266-f133-4fb8-9fb2-ffb4949327aa" active="true">
-        <database>
-          <name value="Cursed" />
-          <description value="Course work database connection" />
-          <database-type value="ORACLE" />
-          <config-type value="BASIC" />
-          <database-version value="19.0" />
-          <driver-source value="BUILTIN" />
-          <driver-library value="" />
-          <driver value="" />
-          <url-type value="SERVICE" />
-          <host value="192.168.170.111" />
-          <port value="1521" />
-          <database value="SSA_PDB" />
-          <type value="USER_PASSWORD" />
-          <user value="SYSTEM" />
-          <deprecated-pwd value="UGEkJHcwcmQ=" />
-        </database>
-        <properties>
-          <auto-commit value="false" />
-        </properties>
-        <ssh-settings>
-          <active value="false" />
-          <proxy-host value="" />
-          <proxy-port value="22" />
-          <proxy-user value="" />
-          <deprecated-proxy-pwd value="" />
-          <auth-type value="PASSWORD" />
-          <key-file value="" />
-          <key-passphrase value="" />
-        </ssh-settings>
-        <ssl-settings>
-          <active value="false" />
-          <certificate-authority-file value="" />
-          <client-certificate-file value="" />
-          <client-key-file value="" />
-        </ssl-settings>
-        <details>
-          <charset value="UTF-8" />
-          <session-management value="true" />
-          <ddl-file-binding value="true" />
-          <database-logging value="true" />
-          <connect-automatically value="true" />
-          <restore-workspace value="true" />
-          <restore-workspace-deep value="true" />
-          <environment-type value="default" />
-          <connectivity-timeout value="5" />
-          <idle-time-to-disconnect value="30" />
-          <idle-time-to-disconnect-pool value="5" />
-          <credential-expiry-time value="10" />
-          <max-connection-pool-size value="7" />
-          <alternative-statement-delimiter value="" />
-        </details>
-        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
-          <object-type-filter use-master-settings="true">
-            <object-type name="SCHEMA" enabled="true" />
-            <object-type name="USER" enabled="true" />
-            <object-type name="ROLE" enabled="true" />
-            <object-type name="PRIVILEGE" enabled="true" />
-            <object-type name="CHARSET" enabled="true" />
-            <object-type name="TABLE" enabled="true" />
-            <object-type name="VIEW" enabled="true" />
-            <object-type name="MATERIALIZED_VIEW" enabled="true" />
-            <object-type name="NESTED_TABLE" enabled="true" />
-            <object-type name="COLUMN" enabled="true" />
-            <object-type name="INDEX" enabled="true" />
-            <object-type name="CONSTRAINT" enabled="true" />
-            <object-type name="DATASET_TRIGGER" enabled="true" />
-            <object-type name="DATABASE_TRIGGER" enabled="true" />
-            <object-type name="SYNONYM" enabled="true" />
-            <object-type name="SEQUENCE" enabled="true" />
-            <object-type name="PROCEDURE" enabled="true" />
-            <object-type name="FUNCTION" enabled="true" />
-            <object-type name="PACKAGE" enabled="true" />
-            <object-type name="TYPE" enabled="true" />
-            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
-            <object-type name="ARGUMENT" enabled="true" />
-            <object-type name="DIMENSION" enabled="true" />
-            <object-type name="CLUSTER" enabled="true" />
-            <object-type name="DBLINK" enabled="true" />
-          </object-type-filter>
-          <object-name-filters />
-        </object-filters>
-      </connection>
-    </connections>
+    <connections />
     <browser-settings>
       <general>
         <display-mode value="TABBED" />
@@ -366,21 +246,21 @@
             <filter-element type="OBJECT" id="dblink" selected="true" />
           </user-schema>
           <public-schema>
-            <filter-element type="OBJECT" id="table" selected="true" />
-            <filter-element type="OBJECT" id="view" selected="true" />
-            <filter-element type="OBJECT" id="materialized view" selected="true" />
-            <filter-element type="OBJECT" id="index" selected="true" />
-            <filter-element type="OBJECT" id="constraint" selected="true" />
-            <filter-element type="OBJECT" id="trigger" selected="true" />
-            <filter-element type="OBJECT" id="synonym" selected="true" />
-            <filter-element type="OBJECT" id="sequence" selected="true" />
-            <filter-element type="OBJECT" id="procedure" selected="true" />
-            <filter-element type="OBJECT" id="function" selected="true" />
-            <filter-element type="OBJECT" id="package" selected="true" />
-            <filter-element type="OBJECT" id="type" selected="true" />
-            <filter-element type="OBJECT" id="dimension" selected="true" />
-            <filter-element type="OBJECT" id="cluster" selected="true" />
-            <filter-element type="OBJECT" id="dblink" selected="true" />
+            <filter-element type="OBJECT" id="table" selected="false" />
+            <filter-element type="OBJECT" id="view" selected="false" />
+            <filter-element type="OBJECT" id="materialized view" selected="false" />
+            <filter-element type="OBJECT" id="index" selected="false" />
+            <filter-element type="OBJECT" id="constraint" selected="false" />
+            <filter-element type="OBJECT" id="trigger" selected="false" />
+            <filter-element type="OBJECT" id="synonym" selected="false" />
+            <filter-element type="OBJECT" id="sequence" selected="false" />
+            <filter-element type="OBJECT" id="procedure" selected="false" />
+            <filter-element type="OBJECT" id="function" selected="false" />
+            <filter-element type="OBJECT" id="package" selected="false" />
+            <filter-element type="OBJECT" id="type" selected="false" />
+            <filter-element type="OBJECT" id="dimension" selected="false" />
+            <filter-element type="OBJECT" id="cluster" selected="false" />
+            <filter-element type="OBJECT" id="dblink" selected="false" />
           </public-schema>
           <any-schema>
             <filter-element type="OBJECT" id="table" selected="true" />

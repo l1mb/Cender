@@ -1,52 +1,63 @@
-package cender.shop.DL.Entities;
+package com.example.lab1.model;
 
-import cender.shop.DL.Enums.GuitarType;
-import lombok.*;
-import org.hibernate.Hibernate;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.text.Collator;
+import java.util.Comparator;
+import java.util.Set;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@JsonAutoDetect
 @Entity
-@Table(name = "products")
+@Table(name="products")
+public class product {
 
-public class Product  {
-    public String name;
-    public String description;
-    public GuitarType guitarType;
-    public String previewImage;
-    public int count;
-    public Date creationDate;
-    public double price;
+    public static final Comparator<product> PRICE_ASCENDING_COMPARATOR = (o1, o2) -> (int) (o1.getPrice() - o2.getPrice());
+
+    public static final Comparator<product> PRICE_DESCENDING_COMPARATOR = (o1, o2) -> (int) (o2.getPrice() - o1.getPrice());
+
+    public static final Comparator<product> TITLE_ASCENDING_COMPARATOR = (o1, o2) -> Collator.getInstance().compare(o1.getTitle(), o2.getTitle());
+
+    public static final Comparator<product> TITLE_DESCENDING_COMPARATOR = (o1, o2) -> Collator.getInstance().compare(o2.getTitle(), o1.getTitle());
+
+    @NotBlank
+    @NotNull
+    @Column(unique = true)
+    private String title;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vendor_id", referencedColumnName = "id")
+    private vendor vendor;
+
+    @NotBlank
+    @NotNull
+    @Column(length = 4000)
+    private String productDescription;
+
+    @NotBlank
+    @NotNull
+    private String rating;
+
+    @NotBlank
+    @NotNull
+    private float price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Product product = (Product) o;
-        return getId() != null && Objects.equals(getId(), product.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public product(String title, vendor vendor){
+        this.title = title;
+        this.vendor = vendor;
     }
 }
+

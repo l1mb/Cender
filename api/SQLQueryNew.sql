@@ -1,20 +1,20 @@
-﻿CREATE TABLE vendorS
+﻿CREATE TABLE vendors
 (
 	id int identity(1, 1),
-	vendor_name varchar(255) default('korzu'),
-	constraint PK_vendor primary key (id)
+	vendor_name varchar(255) default('Undefined'),
+	constraint PK_vendors primary key (id)
 )
 
 CREATE TABLE products
 (
 	id int identity(1, 1),
-	description varchar(4000) not null,
+	product_description varchar(4000) not null,
 	price float default(0),
 	rating varchar(255) default('0+'),
 	title varchar(255) default('Undefined'),
-	vendor_id int not null,
-	constraint PK_vendor primary key (id),
-	foreign key (vendor_id) references vendors(id),
+	publisher_id int not null,
+	constraint PK_products primary key (id),
+	foreign key (publisher_id) references vendors(id),
 	constraint ratingCHK check(rating like '%+')
 );
 
@@ -37,11 +37,11 @@ CREATE TABLE user_order
 	foreign key (user_id) references users(id)
 );
 
-CREATE TABLE order_product
+CREATE TABLE order_products
 (
 	product_id int,
 	order_id int,
-	foreign key (product_id) references vendors(id),
+	foreign key (product_id) references products(id),
 	foreign key (order_id) references user_order(id)
 );
 
@@ -59,9 +59,8 @@ CREATE TABLE users_roles(
 )
 
 
-
-SELECT * FROM publishers;
+SELECT * FROM vendors;
 SELECT * FROM products;
 SELECT * FROM user_order;
-SELECT * FROM order_product;
+SELECT * FROM order_products;
 SELECT * FROM users;

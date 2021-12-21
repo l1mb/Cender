@@ -12,9 +12,9 @@ CREATE TABLE products
 	price float default(0),
 	rating varchar(255) default('0+'),
 	title varchar(255) default('Undefined'),
-	publisher_id int not null,
+	vendor_id int not null,
 	constraint PK_products primary key (id),
-	foreign key (publisher_id) references vendors(id),
+	foreign key (vendor_id) references vendors(id),
 	constraint ratingCHK check(rating like '%+')
 );
 

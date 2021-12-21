@@ -5,7 +5,7 @@ import AgeRating from "@/api/types/products/enums/ageRating";
 import Genre from "@/api/types/products/enums/genre";
 import Platforms from "@/api/types/products/enums/platfrom";
 import IGroupedProduct from "@/api/types/products/IGroupedProduct";
-import PostProductDto from "@/api/types/products/postGame";
+import PostProductDto from "@/api/types/products/postproduct";
 import Label from "@/elements/home/labelElement/label";
 import EditDropdown from "@/elements/home/productCardElement/editDropdown/editDropdown";
 import ImagePicker from "@/elements/home/productCardElement/editImagePicker/imagePicker";
@@ -14,7 +14,7 @@ import detectParameterType from "@/helpers/basic/detectParameters";
 import StringIsNumber from "@/helpers/basic/isString";
 import ProductActions from "@/redux/actions/products/productActionTypes";
 import ProductInteractions from "@/redux/actions/products/productInterator";
-import editData from "@/types/constants/adminModals/editGame";
+import editData from "@/types/constants/adminModals/editproduct";
 import modalType from "./modalType";
 import styles from "./editProduct.module.scss";
 
@@ -35,7 +35,7 @@ function EditProduct(props: EditProps) {
     id: editableProduct?.ids[0].id,
     name: editableProduct?.name,
     developers: editableProduct?.developers,
-    publishers: editableProduct?.publishers,
+    vendors: editableProduct?.vendors,
     price: editableProduct?.price,
     count: editableProduct?.count,
     totalRating: editableProduct?.totalRating,

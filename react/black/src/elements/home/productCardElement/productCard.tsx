@@ -81,7 +81,7 @@ const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ produc
         </div>
         <div className={styles.flipBack}>
           <div className={styles.backText}>
-            <p>{product?.publishers}</p>
+            <p>{product?.vendors}</p>
             <p>{product?.genre}</p>
           </div>
           <SmallPlatfroms

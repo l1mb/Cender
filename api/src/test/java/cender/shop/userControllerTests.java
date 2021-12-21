@@ -28,7 +28,7 @@ public class userControllerTests {
     UserRepository usersRepository;
 
     @Mock
-    ProductRepository gamesRepository;
+    ProductRepository productsRepository;
 
     @InjectMocks
     UserService userService;

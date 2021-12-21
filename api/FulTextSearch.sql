@@ -1,10 +1,10 @@
 CREATE FULLTEXT CATALOG FullTextCatalog;
 
-CREATE FULLTEXT INDEX ON dbo.games
+CREATE FULLTEXT INDEX ON dbo.products
 (
-	game_description Language 1049
+	product_description Language 1049
 )
-KEY INDEX PK_games on FullTextCatalog
+KEY INDEX PK_products on FullTextCatalog
 WITH CHANGE_TRACKING AUTO;
 
-SELECT game_description FROM games WHERE contains(game_description, 'near(преимущество, осведомленности)');
+SELECT product_description FROM products WHERE contains(product_description, 'near(пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');

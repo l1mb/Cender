@@ -1,10 +1,9 @@
-package com.example.cender.controllers;
+package cender.shop.PL.controllers;
 
-import com.example.cender.aop.LogAnnotation;
-import com.example.cender.dto.UserRegisterDto;
-import com.example.cender.services.ServiceCode;
-import com.example.cender.services.ServiceResult;
-import com.example.cender.services.UserService;
+import cender.shop.BL.Services.ServiceCode;
+import cender.shop.BL.Services.ServiceResult;
+import cender.shop.BL.Services.UserService;
+import cender.shop.PL.dto.UserRegisterDto;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

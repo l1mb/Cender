@@ -16,7 +16,6 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @JsonAutoDetect
 @Entity
 @Table(name="Products")

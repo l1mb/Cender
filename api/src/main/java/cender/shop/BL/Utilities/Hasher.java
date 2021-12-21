@@ -18,7 +18,7 @@ public abstract class Hasher {
         try{
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             md.update(salt);
-            byte byteData[] = md.digest(password.getBytes());
+            byte[] byteData = md.digest(password.getBytes());
             md.reset();
             return byteData;
         } catch(NoSuchAlgorithmException ex){

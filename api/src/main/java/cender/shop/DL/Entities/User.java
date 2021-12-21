@@ -16,7 +16,6 @@ import java.util.*;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name="Users")
 public class User implements UserDetails {

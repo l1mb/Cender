@@ -1,64 +1,87 @@
-package cender.shop.BL.Services;
+package com.example.lab1.services;
 
-import cender.shop.BL.Enums.ServiceResultType;
-import cender.shop.BL.Utilities.ServiceResultP;
-import cender.shop.DL.Entities.Product;
-import cender.shop.DL.Repositories.ProductRepository;
-import cender.shop.PL.DTO.Product.ProductDto;
-import org.modelmapper.ModelMapper;
+import com.example.lab1.Exceptions.MyException;
+import com.example.lab1.dto.productDeleteDto;
+import com.example.lab1.dto.productDto;
+import com.example.lab1.dto.productEditDto;
+import com.example.lab1.model.product;
+import com.example.lab1.model.vendor;
+import com.example.lab1.repos.productsRepository;
+import com.example.lab1.repos.vendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
-public class ProductService{
+public class productService {
+    @Autowired
+    productsRepository productsRepository;
 
     @Autowired
-    private ProductRepository _productRepository;
-    private ModelMapper modelMapper;
+    vendorRepository vendorRepository;
 
-    public ServiceResultP<Product> getProductByTerms() {
-        return new ServiceResultP(ServiceResultType.Success);
-    }
+    private final Pattern _pattern = Pattern.compile("\\d{2}\\+|\\d\\+");
 
-    public ServiceResultP<Product> getProductById(int id) {
-        var product = _productRepository.findById((long) id);
-        if(product.isEmpty()){
-            return new ServiceResultP<>(ServiceResultType.NotFound, "The product cannot be found");
+    public product getproductById(Long id) { return productsRepository.getproductById(id); }
+
+    public ServiceResult addproduct(productDto info) throws MyException {
+
+        try {
+            Matcher matcher = _pattern.matcher(info.rating);
+
+            if (!matcher.matches()) {
+                return new ServiceResult(ServiceCode.BAD_REQUEST, "Rating incorrect. Example: 18+");
+            }
+
+            vendor vendor = vendorRepository.findByName(info.vendor);
+
+            productsRepository.addNewproduct(vendor.getId(), info.title, info.rating, info.price, info.productDescription);
+
+            return new ServiceResult(ServiceCode.CREATED, "product added");
+        } catch(Exception ex){
+            throw new MyException(ex.getMessage());
         }
-        return new ServiceResultP<Product>(ServiceResultType.Success, product.get());
     }
 
-    public Product createNewProduct(ProductDto model) {
-        var mappedProduct = modelMapper.map(model, Product.class);
-        return _productRepository.save(mappedProduct);
-    }
+    public ServiceResult editproduct(productEditDto info){
 
-    public Product updateProduct(ProductDto model) {
-        var parsed = modelMapper.map(model, Product.class);
-        return _productRepository.save(parsed);
-    }
+        Matcher matcher = _pattern.matcher(info.rating);
 
-    public void deleteProduct(int id) {
-         var product =  _productRepository.findById((long) id);
-        if(product.isEmpty()){
-            //threw exception
-
+        if (!matcher.matches()){
+            return new ServiceResult(ServiceCode.BAD_REQUEST, "Rating incorrect. Example: 18+");
         }
-        _productRepository.delete(product.get());
+
+        vendor vendor = vendorRepository.findByName(info.vendor);
+
+        productsRepository.updateproduct(info.id, vendor.getId(), info.title, info.rating, info.price, info.productDescription);
+
+        return new ServiceResult(ServiceCode.CREATED, "product successfully edited");
     }
 
-    public ArrayList<Product> getProductList(String term) {
+    public ServiceResult deleteproduct(productDeleteDto info){
+        productsRepository.deleteproduct(info.id);
 
-        return (ArrayList<Product>) _productRepository.getBySearchTerm(term);
-
+        return new ServiceResult(ServiceCode.OK, "product successfully deleted");
     }
 
-    public ArrayList<Product> getProductList() {
 
-        return (ArrayList<Product>) _productRepository.getProductList();
-
+    public ArrayList<product> getproductsByPageNumber(int page, int size, String title){
+        if (title == null){
+            return (ArrayList<product>) productsRepository.getproductsByPageNumber(page, size, null);
+        }
+        return (ArrayList<product>) productsRepository.getproductsByPageNumber(page, size, title);
     }
+
+    public Iterable<product> getproducts(){
+        return productsRepository.getproducts();
+    }
+
+    public int getproductsCount(){
+        return productsRepository.getproductsCount();
+    }
+
+    public int getproductsByTitleCount(String title) {return productsRepository.getproductsByTitleCount(title);}
 }

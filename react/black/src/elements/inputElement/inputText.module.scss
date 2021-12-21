@@ -1,0 +1,54 @@
+.inputItem {
+  position: relative;
+  width: 80%;
+  justify-content: center;
+  margin: 5px auto;
+
+  input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+  }
+
+  .caption {
+    top: 0;
+    left: 0;
+  }
+
+  input:focus ~ .caption {
+    top: -20px;
+    left: 0;
+    color: red;
+    font-size: 14px;
+  }
+
+  input:valid ~ .caption {
+    top: -20px;
+    left: 0;
+    color: red;
+    font-size: 14px;
+  }
+
+  label {
+    position: absolute;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: all 0.5s;
+    transition-property: top, left, color, font-size;
+  }
+
+  .errorLabel {
+    color: red;
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+  }
+}

@@ -1,0 +1,32 @@
+.modalWrapper {
+  width: 500px;
+  flex-direction: column;
+  background: black;
+  display: flex;
+
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 90px;
+      height: 30px;
+      background: transparent;
+      border: none;
+      color: white;
+      border-radius: 5px 5px 0 0;
+      border-bottom: solid 2px red;
+      margin: 20px 0;
+      transition: background 0.3s ease;
+    }
+
+    button:active {
+      background: rgba($color: #f00, $alpha: 0.6);
+    }
+  }
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}

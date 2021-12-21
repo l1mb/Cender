@@ -1,0 +1,8 @@
+.label {
+  border-bottom: 1px solid white;
+  padding: 4px;
+  margin: 16px 32px;
+  display: flex;
+  flex-grow: 1;
+  color: #fff;
+}

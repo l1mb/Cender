@@ -1,0 +1,18 @@
+.header {
+  background-color: #121211;
+  height: 10%;
+
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+
+  .label {
+    color: white;
+    font-size: 24px;
+  }
+
+  .blocks {
+    margin: 0 32px;
+  }
+}

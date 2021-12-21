@@ -1,0 +1,36 @@
+.extraDiv {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  .page_wrapper {
+    width: 100%;
+    height: calc(100% - 174px);
+    background-image: url("../../assets/images/pc-stands-alone.jpg");
+    object-fit: contain;
+
+    display: flex;
+    color: white;
+    justify-content: center;
+    .page_content {
+      font-family: "Raleway", sans-serif;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      width: 60%;
+
+      .header {
+        margin: 32px 0 48px 0;
+        text-align: center;
+        font-size: 32px;
+      }
+      .body {
+        margin: 15px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 30px;
+        line-height: 2.1;
+      }
+    }
+  }
+}

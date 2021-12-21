@@ -1,0 +1,121 @@
+@import "../../components/homeComponent/shared.module.scss";
+
+.cartWrapper {
+  background: url("../../assets/images/staingUp.jpg");
+  height: 90vh;
+  width: 100vw;
+
+  padding-bottom: 90px;
+
+  background-position: center center;
+  background-size: cover;
+
+  display: flex;
+  justify-content: center;
+
+  .tableContainer {
+    background-color: rgba(#000, 0.8);
+    padding: 70px 120px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px red;
+    margin: auto;
+
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 800px;
+
+    align-items: center;
+
+    thead {
+      border-bottom: 1px solid white;
+    }
+
+    th,
+    td {
+      padding: 5px;
+      width: 100px;
+
+      display: flex;
+      justify-content: center;
+    }
+
+    tr {
+      display: flex;
+
+      padding: 10px 0;
+    }
+
+    input {
+      color: white;
+    }
+
+    input[type="button"] {
+      display: flex;
+      flex-grow: 1;
+      border: none;
+      box-shadow: 0 0 8px white;
+      border-radius: 5px;
+      padding: 7px 5px;
+      background-color: rgba(#000, 0.8);
+      transition: box-shadow 0.2s ease;
+    }
+
+    input[type="button"]:active {
+      box-shadow: 0 0 8px red;
+    }
+
+    tfoot {
+      display: flex;
+      justify-content: space-around;
+
+      tr {
+        display: flex;
+        justify-content: center;
+
+        td {
+          margin: 0 100px;
+        }
+      }
+    }
+  }
+
+  .removeButton {
+    width: inherit;
+    text-align: right;
+    justify-content: end;
+
+    button {
+      float: right;
+      margin-right: 0px;
+      margin-left: auto;
+    }
+  }
+
+  .sorryImage {
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      margin: 0;
+      color: white;
+      background-color: transparent;
+    }
+
+    a {
+      text-decoration: none;
+      color: red;
+    }
+
+    image {
+      width: 664px;
+      height: 375px;
+    }
+  }
+}

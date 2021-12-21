@@ -1,0 +1,16 @@
+.imageContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+
+  label {
+    border-bottom: white 1px solid;
+  }
+
+  input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  }
+}

@@ -1,0 +1,153 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formWrapper {
+  background: black;
+  width: 480px;
+  height: 640px;
+  color: white;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    background: black;
+    text-align: center;
+  }
+
+  .inputItem {
+    position: relative;
+    margin: auto;
+    width: 80%;
+  }
+
+  form button {
+    margin: 0 auto;
+    display: flex;
+    height: 60%;
+    position: relative;
+    padding: 10px 20px;
+    color: red;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.4s;
+    letter-spacing: 2px;
+
+    background: transparent;
+    border: none;
+  }
+
+  button:hover {
+    background: red;
+    color: black;
+    border-radius: 5px;
+  }
+
+  button span {
+    position: absolute;
+    display: block;
+  }
+
+  /* stylelint-disable */
+
+  button span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(360deg, rgba(255, 255, 255, 0), red);
+    animation: btn-anim1 0.5s reverse infinite;
+  }
+
+  /* stylelint-enable */
+
+  @keyframes btn-anim1 {
+    0% {
+      left: -100%;
+    }
+
+    50%,
+    100% {
+      left: 100%;
+    }
+  }
+
+  /* stylelint-disable */
+
+  button pan:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    animation: btn-anim2 0.5s reverse infinite;
+    background: linear-gradient(360deg, rgba(255, 255, 255, 0), red);
+    animation-delay: 0.25s;
+  }
+
+  /* stylelint-enable */
+  @keyframes btn-anim2 {
+    0% {
+      top: -100%;
+    }
+
+    50%,
+    100% {
+      top: 100%;
+    }
+  }
+
+  /* stylelint-disable */
+
+  button span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(360deg, rgba(255, 255, 255, 0), red);
+    animation: btn-anim3 0.5s reverse infinite;
+    animation-delay: 0.5s;
+  }
+
+  /* stylelint-enable */
+  @keyframes btn-anim3 {
+    0% {
+      right: -100%;
+    }
+
+    50%,
+    100% {
+      right: 100%;
+    }
+  }
+
+  /* stylelint-disable */
+
+  button span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, rgba(255, 255, 255, 0), red);
+    animation: btn-anim4 0.5s reverse infinite;
+    animation-delay: 0.75s;
+  }
+
+  /* stylelint-enable */
+  @keyframes btn-anim4 {
+    0% {
+      bottom: -100%;
+    }
+
+    50%,
+    100% {
+      bottom: 100%;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+.dropdown {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+  margin: 10px auto;
+
+  input {
+    background: transparent;
+    border: none;
+    border-bottom: white solid 2px;
+    transition: border 0.2s ease-in-out;
+  }
+
+  input:focus {
+    border-bottom: red solid 2px;
+  }
+
+  span {
+    color: white;
+  }
+}

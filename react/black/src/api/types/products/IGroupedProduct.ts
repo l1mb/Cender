@@ -3,7 +3,7 @@ import Platforms from "./enums/platfrom";
 interface IGroupedProduct {
   name: string;
   developers: string;
-  publishers: string;
+  vendors: string;
   genre: number;
   rating: number;
   logo: string;

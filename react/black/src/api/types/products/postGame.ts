@@ -4,7 +4,7 @@ interface PostProductDto {
   id?: number;
   name: string;
   developers: string;
-  publishers: string;
+  vendors: string;
   genre: number;
   rating: number;
   logo: File;

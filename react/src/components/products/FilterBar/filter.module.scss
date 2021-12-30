@@ -1,0 +1,30 @@
+.filterContainer {
+  padding: 20px;
+
+  width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 0 3px white;
+
+  background: rgba($color: #000000, $alpha: 0.8);
+  color: white;
+  .labels {
+    margin: 20px 0px 6px 0px;
+  }
+
+  .firstLabel {
+    text-align: center;
+    margin: 0px 0px 6px 0px;
+  }
+  .createButton {
+    width: 100%;
+    button {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.names {
+  width: 100%;
+  margin: 16px 0 !important;
+}

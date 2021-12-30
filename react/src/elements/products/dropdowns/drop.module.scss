@@ -1,0 +1,21 @@
+@import "../../../components/homeComponent/shared.module.scss";
+
+.dropdown {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  select {
+    option {
+      background-color: transparent;
+      color: black;
+    }
+    width: 100px;
+    border: none;
+    border-bottom: solid 2px white;
+    color: white;
+    padding: 3px;
+    padding-bottom: 6px;
+    background: transparent;
+  }
+}

@@ -1,0 +1,20 @@
+.header {
+  background-color: #121211;
+  height: 10%;
+
+  display: flex;
+  align-items: center;
+  font-family: "Abel", sans-serif;
+
+  justify-content: space-between;
+
+  .label {
+    margin-left: 50px;
+    color: white;
+    font-size: 24px;
+  }
+
+  .blocks {
+    margin: 0 32px;
+  }
+}

@@ -1,0 +1,15 @@
+@import "../../../components/homeComponent/shared.module.scss";
+
+.wrapper {
+  background-color: $half-transparent-black;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  .ProductsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+}

@@ -1,73 +1,47 @@
-# Development Configuration
-## Requirements
-- Nodejs 16.13.1
-- Oracle database enterprise 12.2.0.1
+# webpack-must-have
 
-## Installation
-### Nodejs dependencies
-```sh
-git clone https://github.com/hassty/uzhas-arkhema
-cd uzhas-arkhema && npm install
-cd black && npm install
-```
-### Docker image
-```sh
-docker run -d -p <host-port>:1521 --name <container-name> \
-    -m 4G store/oracle/database-enterprise:12.2.0.1
-```
-To access os in container
-```sh
-docker exec -u root -ti <container-name> /bin/bash
-```
-To use sqlplus in container
-```sh
-docker exec -it <container-name> bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
-```
-Shtob nauchit' oracle bazarit' po russki (eto esli sho vnutri containera delat' nado)
-```sh
-echo -e '#ya ruski\nexport NLS_LANG=AMERICAN_CIS.UTF8' >> /home/oracle/.bashrc
-```
+Webpack version: 5+
 
-## Project structure
-    ├─ black/           frontend
-    ├─ sql/             
-    │  ├─ setup/        setup pdb, users and tables
-    │  ├─ procedures/   packages with pl-sql procedures
-    ├─ src/
-    │  ├─ app.js        Server entry point
-    │  ├─ config/       Environment variables setup
-    │  ├─ controllers/
-    │  ├─ middleware/
-    │  ├─ routers/
-    └─ .env             Environment config file
-## .env file
-```sh
-DB_USERNAME="your_username"
-DB_PASSWORD="your_password"
-DB_URL="host:port/pdbname.localdomain"
-TOKEN_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
+## What is new in Webpack 5
 
-You can generate token secret using nodejs
-```sh
-node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-```
+- Faster builds with persistent caching
+- Smaller bundle sizes (better tree-shaking)
+- Better long term caching
 
-## Environment variables
-- UV_THREADPOOL_SIZE - if set to a number, sets connection pool size to this number and makes the pool static (better performance)
-- PORT - specifies port for backend server (default: 5000)
+### If you need Webpack4 take a look branch [webpack_v4](https://github.com/Yegorich555/WebpackMustHave/tree/webpack_v4)
 
-## Launch server
-To launch server via nodemon
-```sh
-npm run dev
-```
+## How to run project
 
-To launch server with static db connection pool of size 4
-```sh
-npm run static
-```
-To launch server with default settings
-```sh
-node src/app.js
-```
+1. Open project in VSCode (for example)
+2. Run command `npm i` in terminal (console) for installing all required packages (Node.js is required: <https://nodejs.org/en/>)
+3. For builing project you can use the following commands:
+   - `npm run build-prod` - building production version (minimized and optimized). The project will be builded into `build` folder. You can change destination in `webpack.common.js (line 19)`
+   - `npm run build-dev` - building development version
+   - `npm run serve` - building development hot-reloaded version with webpack-dev-server
+
+## Recommended VSCode extensions
+
+- CSS Modules: <https://marketplace.visualstudio.com/items?itemName=clinyong.vscode-css-modules>
+- CSS Modules Syntax Highlighter: <https://marketplace.visualstudio.com/items?itemName=andrewleedham.vscode-css-modules>
+- ESlint: <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>
+- Stylelint: <https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint>
+- SCSS intellisense: <https://marketplace.visualstudio.com/items?itemName=mrmlnc.vscode-scss>
+- Path autocomplete: <https://marketplace.visualstudio.com/items?itemName=ionutvmi.path-autocomplete>
+- Prettier - Code formatter: <https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>
+- Import Cost: <https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost>
+- Markdownlint: <https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint>
+- EditConfig for VS Code: <https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig>
+
+## Features
+
+- **Lint**. Integrated the most popular linters: ESlint, Stylelint
+- **BrowserList**. All required browsers are pointed in **.browserslistrc**, so project will be compiled according to required browsers (babel, postcss, stylint use this file)
+- **BrowserList. Stylelint**. Integrated [no-unsupported-browser-features](https://www.npmjs.com/package/stylelint-no-unsupported-browser-features), so during the css,scss-coding stylelint will show on-css rule that unsupported (according to .browserslistrc)
+- **MockServer**. For mocking api responses integrated [webpack-mock-server](https://www.npmjs.com/package/webpack-mock-server) that supports JS,TS and hot-replacement:
+- **Styles**. Integrated [CSS-Modules](https://github.com/css-modules/css-modules) and [postcss-autoprefixer](https://www.npmjs.com/package/autoprefixer), [postcss-normalize](https://www.npmjs.com/package/postcss-normalize), [OptimizeCSSAssetsPlugin](https://www.npmjs.com/package/optimize-css-assets-webpack-plugin) (uses [css-nano](https://cssnano.co/) for production build)
+
+## TODO. Issues
+
+- add Prepack
+- add icomoon to fonts
+- Path autocomplete doesn't read path-alias-config from tsconfig.json

@@ -1,0 +1,63 @@
+@import "../../components/homeComponent/shared.module.scss";
+
+.productsWrapper {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 0, 0, 0.7) rgba(0, 0, 0, 0.5);
+
+  background: url("../../assets/images/manPraingGuitar.jpg");
+  height: 90vh;
+  width: 100vw;
+  color: white;
+
+  padding-bottom: 90px;
+
+  background-position: center center;
+  background-size: cover;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow-y: auto;
+
+  .pagination_btn {
+    button {
+      color: #6666ff;
+    }
+  }
+
+  .searchBar {
+    input {
+      width: 40vw;
+    }
+
+    margin: 15px auto;
+  }
+
+  .pageContent {
+    display: flex;
+    margin: auto;
+    margin-top: 40px;
+    width: 100%;
+    margin-bottom: 100px;
+  }
+
+  .filterBar {
+    width: 250px;
+    margin: 0 100px;
+  }
+
+  .ProductBar {
+    background: $half-transparent-black;
+    padding: 30px;
+    border-radius: 10px;
+    width: 55%;
+    margin: 0 min(100px);
+  }
+
+  .items {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+  }
+}

@@ -1,0 +1,129 @@
+[
+  {
+    "route": "/product",
+    "methods": {
+      "post": {
+        "body": {
+          "name": "string",
+          "description": "string",
+          "logo:": "string",
+          "price": "number",
+          "mnfrId": "number",
+          "shape": "string",
+          "pickUpId": "number"
+        }
+      },
+      "put": {
+        "body": {
+          "id": "number",
+          "name": "string",
+          "description": "string",
+          "logo:": "string",
+          "price": "number",
+          "mnfrId": "number",
+          "shape": "string",
+          "pickUpId": "number"
+        }
+      },
+      "get": {
+        "body": {
+          "id": "number",
+          "name": "string",
+          "description": "string",
+          "logo:": "string",
+          "price": "number",
+          "shape": "string",
+          "pickups": {
+            "id": "number",
+            "label": "string"
+          },
+          "manufacturer": {
+            "id": "number",
+            "label": "string"
+          }
+        }
+      },
+      "delete": {
+        "justQueryBaram": "numb"
+      }
+    }
+  },
+  {
+    "route": "/manufacturers",
+    "methods": {
+      "get": {
+        "body": {
+          "id": "number",
+          "name": "string",
+          "news": [
+            {
+              "id": "number",
+              "news": "string",
+              "createdAt": "string"
+            },
+            {
+              "id": "number",
+              "news": "string",
+              "createdAt": "string"
+            },
+            {
+              "id": "number",
+              "news": "string",
+              "createdAt": "string"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "route": "/manufacturers/news",
+    "methods": {
+      "post": {
+        "body": {
+          "manufacrurerId": "number",
+          "news": "string"
+        }
+      },
+      "put": {
+        "id": "number",
+        "news": "string"
+      },
+
+      "delete": {
+        "justQueryBaram": "numb"
+      }
+    }
+  },
+  {
+    "route": "/orders/news",
+    "methods": {
+      "post": {
+        "body": {
+          "userId": "number",
+          "productId": "number",
+          "count": "number"
+        }
+      },
+      "put": {
+        "id": "number",
+        "userId": "number",
+        "productId": "number",
+        "count": "number"
+      },
+      "get": {
+        "id": "number",
+        "name": "string",
+        "status": "string",
+        "vendor": "string",
+        "registered": "string",
+        "price": "string",
+        "userId?": "number"
+      },
+
+      "delete": {
+        "justQueryBaram": "numb"
+      }
+    }
+  }
+]

@@ -1,17 +1,12 @@
-import StateType from "@/redux/types/stateType";
-import HeaderProps from "@/types/interfaces/props/headerProps/headerProps";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import StateType from "@/redux/types/stateType";
 import cartIcon from "../../../assets/icons/shopping-cart.png";
 import stl from "./header.module.scss";
+import PreOrderState from "@/redux/types/orders";
 
-const HeaderCartItem: React.FC<{
-  styles: {
-    [className: string]: string;
-  };
-  data: HeaderProps;
-}> = (props): JSX.Element => {
-  const ordersCount = useSelector<StateType, { count: number }>((state) => state.orders);
+function HeaderCartItem(props): JSX.Element {
+  const ordersCount = useSelector<StateType, PreOrderState>((state) => state.orders);
 
   return (
     <NavLink activeClassName={props.styles.active} to={props.data.data.cart.route}>
@@ -19,11 +14,11 @@ const HeaderCartItem: React.FC<{
       <img src={cartIcon} alt="cart" className={stl.img} />
       <div className={stl.imageContainer}>
         <div className={stl.avatarCircle}>
-          <p className={stl.initials}>{ordersCount.count}</p>
+          <p className={stl.initials}>{ordersCount.items.length}</p>
         </div>
       </div>
     </NavLink>
   );
-};
+}
 
 export default HeaderCartItem;

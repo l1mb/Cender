@@ -1,142 +1,168 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { NavLink, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { NavLink, NavLink } from "react-router-dom";
 import emptyCart from "src\\assets\\images\\cart\\empty-cart.png";
-import orders from "@/api/httpService/orders/ordersApi";
-import setCountDispatch from "@/redux/actions/orders/setCount";
+import { toast } from "react-toastify";
 import Spinner from "@/elements/home/spinnerElement/spinner";
-import cartMessages from "@/types/constants/messages/cart";
-import Thead from "@/elements/cart/orderTable/thead";
-import orderTheadData from "@/types/constants/components/cart/thead";
-import SorryImage from "@/elements/cart/sorryImage/sorryImage";
-import errors from "@/types/constants/errors/errors";
 import styles from "./cart.module.scss";
+import StateType from "@/redux/types/stateType";
+import PreOrderState from "@/redux/types/orders";
+import SorryImage from "@/elements/cart/sorryImage/sorryImage";
 import RoutesData from "../routesComponent/types/routes/RoutesData";
-import OrderProduct from "@/types/interfaces/order/orderProduct";
+import getOptions from "@/api/httpService/tokenedOptions";
+import getEmail from "@/helpers/token/getUsername";
 
 const CartRow = React.lazy(() => import("@/elements/cart/cartItemElement/cartRow"));
+interface Order {
+  orderId: number;
+  products: {
+    title: string;
+    vendor: string;
+    rating: string;
+    price: number;
+  }[];
+}
 
 function Cart() {
-  const [params, setParams] = useState<OrderProduct[]>([]);
-  const [removeId, setId] = useState<number[]>([]);
+  const cutOrders = useSelector<StateType, PreOrderState>((state) => state.orders).items;
   const [price, setPrice] = useState(0);
+  const [prevOrderIds, setPrevOrderIds] = useState<number[]>([]);
+  const [prevOrders, setPrevOrders] = useState<Order[]>([]);
 
-  const history = useHistory();
-
-  const getZipped = async () => {
-    const data = await orders.getOrders();
-    if (data) {
-      setParams(data);
-    }
-  };
-
-  const dispatch = useDispatch();
-
-  const handleRemove = async () => {
-    const data = await orders.deleteOrders({
-      keys: params.filter((elem) => removeId.includes(elem.id)).map((element) => element.id),
-    });
-
-    if (data.status === 204) {
-      toast.success(cartMessages.deleteSuccess);
-      dispatch(setCountDispatch());
-      setParams((prevState) => prevState.filter((m) => !removeId.includes(m.id)));
-    }
-  };
-
-  const changeAmount = async (amount: number, id: number) => {
-    const objIndex = params.findIndex((obj) => obj.id === id);
-    params[objIndex].count = amount;
-
-    const data = await orders.updateOrder({
-      id: params[objIndex].id,
-      productId: params[objIndex].productId,
-      applicationUserId: params[objIndex].userId,
-    });
-
-    if (data) {
-      toast.success(cartMessages.amountChangedSuccess);
-    }
-  };
-
-  const handleBuy = async () => {
-    const data = await orders.completeOrders({
-      keys: params.filter((elem) => removeId.includes(elem.id)).map((element) => element.id),
-    });
-
-    if (data.status === 204) {
-      toast.success(cartMessages.boughtSuccess);
-      dispatch(setCountDispatch());
-      history.push(RoutesData.profile.route);
-    }
-    if (data.status === 500) {
-      toast.error(errors.alreadyBought);
+  const handleSubmit = async () => {
+    const email = getEmail();
+    const body = { userEmail: email, products: cutOrders };
+    const res = await fetch("/api/create-order", getOptions("POST", true, body));
+    if (res.status === 200) {
+      toast.success("completed successfully");
     }
   };
 
   useEffect(() => {
-    getZipped();
+    async function fetchIds() {
+      const res = await fetch("/api/get-user-orders-ids", getOptions("GET", true));
+      if (res.status === 200) {
+        setPrevOrderIds((await res.json()) as number[]);
+      }
+    }
+
+    fetchIds();
   }, []);
 
   useEffect(() => {
-    const data = params.map((e) => Number(e.price) * Number(e.count)).reduce((acc, a) => acc + a, 0);
+    function fetchIds() {
+      Promise.all(
+        prevOrderIds.map((elem) => fetch(`/api/get-order-info?orderId=${elem}`, getOptions("GET", true)))
+      ).then((values) => {
+        values.forEach(async (el) => {
+          const res = await el.json();
+          setPrevOrders((prevState) => prevState?.concat(res));
+        });
+      });
+    }
+
+    if (prevOrderIds.length > 0) {
+      fetchIds();
+    }
+  }, [prevOrderIds]);
+
+  useEffect(() => {
+    console.log(JSON.stringify(prevOrders));
+  }, [prevOrders]);
+
+  useEffect(() => {
+    const data = prevOrders
+      ? prevOrders.map((e) => e.products.map((q) => q.price).reduce((f, s) => f + s, 0)).reduce((acc, a) => acc + a, 0)
+      : cutOrders.map((e) => Number(e.price)).reduce((acc, a) => acc + a, 0);
     setPrice(data);
-    console.log(params);
-  }, [params]);
+  }, [cutOrders, prevOrders]);
+
+  const getContent = () => {
+    if (cutOrders.length > 0) {
+      return (
+        <>
+          <h2>Your cart</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cutOrders.length &&
+                cutOrders.length > 0 &&
+                cutOrders.map((u) => (
+                  <tr key={`${u.title}`}>
+                    <td>{u.id}</td>
+                    <td>{u.title}</td>
+                    <td>{u.price}</td>
+                  </tr>
+                ))}
+            </tbody>
+            <tfoot>
+              <tr className={styles.removeButton}>
+                <td>{cutOrders && <span>Total cost: {price}$</span>}</td>
+                <td>
+                  <input type="button" value="Buy" onClick={handleSubmit} />
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </>
+      );
+    }
+    if (prevOrders.length > 0) {
+      return (
+        <>
+          <h2>Your previous items</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Order id</th>
+                <th>title</th>
+                <th>vendor</th>
+                <th>rating</th>
+                <th>price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {prevOrders.length &&
+                prevOrders.length > 0 &&
+                prevOrders.map((u) =>
+                  u.products.map((e, index) => (
+                    <tr key={`${u.orderId}`}>
+                      <td>{index > 0 ? "" : u.orderId}</td>
+                      <td>{e.title}</td>
+                      <td>{e.vendor}</td>
+                      <td>{e.rating}</td>
+                      <td>{e.price}</td>
+                    </tr>
+                  ))
+                )}
+            </tbody>
+            <tfoot>
+              <tr className={styles.removeButton}>
+                <td>{cutOrders && <span>Total spent: {price}$</span>}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </>
+      );
+    }
+    return (
+      <SorryImage label="Your cart is empty" image={emptyCart} className={styles.sorryImage}>
+        <h2>Your cart is empty</h2>
+        <NavLink to={RoutesData.products[0].route}>Add some products into your cart</NavLink>
+      </SorryImage>
+    );
+  };
 
   return (
     <div className={styles.cartWrapper}>
       <div className={styles.tableContainer}>
-        <Suspense fallback={<Spinner />}>
-          {params.length > 0 ? (
-            <table>
-              <Thead data={orderTheadData} />
-              <tbody>
-                {params.length &&
-                  params.length > 0 &&
-                  params.map((u) => (
-                    <CartRow
-                    elem={u}
-                      key={u.id}
-                      name={u.name}
-                      pushId={setId}
-                      changeAmount={changeAmount}
-                      shape={u.shape}
-                      orderDate={u.orderDate}
-                      amount={u.count}
-                      orderId={u.id}
-                      price={Number(u.price)}
-                    />
-                  ))}
-
-                <tr className={styles.removeButton}>
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td>
-                    <input type="button" value="Remove" onClick={handleRemove} disabled={removeId.length === 0} />
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr className={styles.removeButton}>
-                  <td>{params && <span>Total cost: {price}$</span>}</td>
-                  <td>
-                    <input type="button" value="Buy" onClick={handleBuy} />
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          ) : (
-            <SorryImage label="Your cart is empty" image={emptyCart} className={styles.sorryImage}>
-              <h2>Your cart is empty</h2>
-              <NavLink to={RoutesData.products[0].route}>Add some products into your cart</NavLink>
-            </SorryImage>
-          )}
-        </Suspense>
+        <Suspense fallback={<Spinner />}>{getContent()}</Suspense>
       </div>
     </div>
   );

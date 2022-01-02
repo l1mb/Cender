@@ -5,7 +5,6 @@ import useProductFetcher from "@/hooks/loader/loader";
 import FilterBar from "./FilterBar/filter";
 import styles from "./style.module.scss";
 import productsApi from "@/api/httpService/products/productsApi";
-import QueryParams from "@/types/interfaces/filter/queryParams";
 import StateType from "@/redux/types/stateType";
 import SearchBar from "@/elements/home/searchBarElement/searchBar";
 import { readProductDto } from "@/api/types/newProduct/rProductDto";
@@ -18,12 +17,10 @@ interface itemsProps {
   setMode: (e: string) => void;
   setProduct: (e: readProductDto) => void;
   currentItems: readProductDto[] | null;
+  pageNumber: number;
 }
 
 interface paginatedProps {
-  pagesCount: number;
-  params: QueryParams | undefined;
-  setParams: (e: QueryParams) => void;
   data: readProductDto[];
 }
 
@@ -42,16 +39,15 @@ function Products() {
   const [product, setProduct] = useState<readProductDto>();
   const [pagesCount, setPagesCount] = useState<number>(1);
   const dispatch = useDispatch();
+  const [pageNumber, setPageNumber] = useState(1);
 
   const data = useSelector<StateType, readProductDto[]>((state) => state.products);
 
   useEffect(() => {
     async function getCount() {
-      const res = await productsApi.apiGetCount();
+      const res = await (await productsApi.apiGetCount()).json();
       if (res) {
-        setPagesCount(res);
-      } else {
-        console.log("ne robit");
+        setPagesCount(res + 1);
       }
     }
 
@@ -61,8 +57,7 @@ function Products() {
   const handlePageClick = (event, page) => {
     const t = params;
     if (t) {
-      t.limit = 6;
-      t.offset = t.limit * page - 6;
+      t.page = page;
       setParams({ ...t });
     }
   };
@@ -73,7 +68,7 @@ function Products() {
       </div>
       <div className={styles.pageContent}>
         <div className={styles.filterBar}>
-          <FilterBar setQuery={setParams} />
+          <FilterBar setQuery={setParams} params={params} />
         </div>
         <div className={styles.ProductBar}>
           <Label content="Products">
@@ -90,7 +85,7 @@ function Products() {
           </Label>
           <div className={styles.items}>
             <div className={styles.pagination}>
-              <PaginatedItems pagesCount={pagesCount} data={data} params={params} setParams={setParams} />
+              <PaginatedItems data={data} />
             </div>
           </div>
         </div>

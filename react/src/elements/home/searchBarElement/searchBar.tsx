@@ -8,7 +8,7 @@ import styles from "./searchBar.module.scss";
 import Dropdown from "./searchDropdown";
 
 interface SearchProps {
-  setOpen?: (e: boolean) => void;
+  setOpen?: () => void;
   show?: boolean;
 }
 
@@ -19,7 +19,7 @@ function SearchBar(props: SearchProps): JSX.Element {
 
   const fetchProducts = async (text: string) => {
     const data = await Products.apiGetSearchProducts(text);
-    setResults(data.map((u) => u.name));
+    setResults(data.map((u) => u.title));
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +42,8 @@ function SearchBar(props: SearchProps): JSX.Element {
           className={styles.createButton}
           onClick={() => {
             if (props.setOpen) {
-              props.setOpen(true);
+              console.log("pasasi");
+              props.setOpen();
             }
           }}
         >

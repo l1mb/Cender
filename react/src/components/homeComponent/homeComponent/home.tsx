@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "@/elements/home/searchBarElement/searchBar";
 import Modal from "@/components/modalComponent/modalComponent/modal";
 import EditProduct from "@/components/modalComponent/editProductModal/editProduct";
@@ -9,11 +9,19 @@ import Products from "../productComponent/products";
 
 function Home(): JSX.Element {
   const [isOpen, setOpen] = useState(false);
+  useEffect(() => {
+    console.log(isOpen);
+  }, [isOpen]);
   return (
     <>
       <div className={styles.wrapper}>
         <div className={styles.searchBar}>
-          <SearchBar setOpen={setOpen} show />
+          <SearchBar
+            setOpen={() => {
+              setOpen(true);
+            }}
+            show
+          />
         </div>
         <div className={styles.categories}>
           <Categories />

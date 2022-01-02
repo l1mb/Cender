@@ -7,7 +7,7 @@ const RoutesData: IRoutes = {
   signUp: { label: "Sign up", route: "/sign-up" },
   about: { label: "News", route: "/news" },
   cart: { label: "Cart", route: "/cart" },
-  products: CategoriesData.map((u) => ({ label: u.name, route: `/${u.name.toLowerCase()}` })),
+  products: CategoriesData.map((u) => ({ label: u.name, route: `/products/${u.name.toLowerCase()}` })),
   profile: { label: "profile", route: "/profile" },
 };
 

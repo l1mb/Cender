@@ -1,15 +1,15 @@
-import ICategoryData from "@/components/routesComponent/types/categories/ICategoryData";
 import { useHistory } from "react-router-dom";
+import ICategoryData from "@/components/routesComponent/types/categories/ICategoryData";
 import styles from "./platformCard.module.scss";
 
 interface PlatformProps {
   data: ICategoryData;
 }
 
-const PlatformCard: React.FC<PlatformProps> = (props) => {
+function PlatformCard(props: PlatfromProps) {
   const history = useHistory();
   const push = () => {
-    history.push(`/${props.data.name.toLowerCase()}`);
+    history.push(`/products/${props.data.name.toLowerCase()}`);
   };
 
   const clickHandler = () => {
@@ -34,6 +34,6 @@ const PlatformCard: React.FC<PlatformProps> = (props) => {
       <span>{props.data.name}</span>
     </div>
   );
-};
+}
 
 export default PlatformCard;

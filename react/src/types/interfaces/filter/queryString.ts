@@ -1,29 +1,26 @@
-import OrderBy from "@/api/types/Products/enums/orderBy";
-import OrderType from "@/api/types/Products/enums/orderType";
-
 const handleFirstItem = (src: string, addedValue: string) => {
   const data = (src === "?" ? "" : `&`) + addedValue.toLowerCase();
   return data;
 };
 
 const buildString = (
-  orderby?: string | OrderBy,
-  type?: string | OrderType,
-  limit?: number,
-  offset?: number,
-  shape?: string,
-  mnfrId?: number,
-  pickUpId?: number
+  shape: string,
+  orderBy: string,
+  ageRating: string,
+  from?: string,
+  to?: string,
+  title: string,
+  page?: number
 ): string => {
   let initQuery = "?";
-
-  initQuery += orderby ? `orderby=${orderby.toLowerCase()}` : "";
-  initQuery += type ? handleFirstItem(initQuery, `mode=desc`) : "";
-  initQuery += limit ? handleFirstItem(initQuery, `limit=${limit}`) : "";
-  initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
+  initQuery += `page=${page || 1}&`;
+  initQuery += `priceFrom=${from || 0}&`;
+  initQuery += `priceTo=${to || 999999}&`;
+  initQuery += ageRating ? handleFirstItem(initQuery, `rating18=${ageRating}`) : "";
+  initQuery += 6 ? handleFirstItem(initQuery, `size=${6}`) : "";
+  initQuery += orderBy ? handleFirstItem(initQuery, `sort=${orderBy}`) : "";
+  initQuery += title ? handleFirstItem(initQuery, `title=${title}`) : "";
   initQuery += shape ? handleFirstItem(initQuery, `shape=${shape}`) : "";
-  initQuery += mnfrId ? handleFirstItem(initQuery, `mnfrId=${mnfrId}`) : "";
-  initQuery += pickUpId ? handleFirstItem(initQuery, `pickUpId=${pickUpId}`) : "";
   return initQuery;
 };
 

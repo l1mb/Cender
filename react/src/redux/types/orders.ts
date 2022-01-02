@@ -1,5 +1,11 @@
-interface OrderState {
-  count: number;
+interface PreOrderState {
+  items: OrderItem[];
 }
 
-export default OrderState;
+export interface OrderItem {
+  id: number;
+  title: string;
+  price: number;
+}
+
+export default PreOrderState;

@@ -11,7 +11,6 @@ interface headerOptions {
 }
 
 const getOptions = <T>(methodType: string, useToken: boolean, body?: T): headerOptions => {
-  console.log(body);
   return {
     method: methodType,
     headers: {

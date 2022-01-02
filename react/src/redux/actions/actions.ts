@@ -1,28 +1,17 @@
-import { readProductDto } from "@/api/types/newProduct/rProductDto";
-import IBasicProduct from "@/api/types/products/IBasicProduct";
 import userDto from "@/api/types/user/userDto";
-import mnfrReadDto from "@/types/interfaces/news/nmfrs";
-import OrderState from "../types/orders";
+import { updateProductDto } from "@/types/dtos/product/productDto";
+import PreOrderState from "../types/orders";
 
 export const SET_USER = "SET_USER";
 export const SET_COUNT = "SET_COUNT";
 export const SET_ROLE = "SET_ROLE";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 export const SET_MNFRS = "SET_MNFRS";
+export const SET_ORDER = "SET_ORDER";
 
 const setUser = (user: userDto): { type: string; payload: userDto } => ({
   type: SET_USER,
   payload: user,
-});
-
-const setCount = (
-  orders: OrderState
-): {
-  type: string;
-  payload: OrderState;
-} => ({
-  type: SET_COUNT,
-  payload: orders,
 });
 
 const setRole = (
@@ -36,23 +25,23 @@ const setRole = (
 });
 
 const setProducts = (
-  Products: readProductDto[]
+  Products: updateProductDto[]
 ): {
   type: string;
-  payload: readProductDto[];
+  payload: updateProductDto[];
 } => ({
   type: SET_PRODUCTS,
   payload: Products,
 });
 
-const setMnfrs = (
-  mnfrs: mnfrReadDto[]
+const setOrderItems = (
+  order: PreOrderState
 ): {
   type: string;
-  payload: mnfrReadDto[];
+  payload: PreOrderState;
 } => ({
-  type: SET_MNFRS,
-  payload: mnfrs,
+  type: SET_ORDER,
+  payload: order,
 });
 
-export default { setUser, setCount, setRole, setProducts, setMnfrs };
+export default { setUser, setOrderItems, setRole, setProducts };

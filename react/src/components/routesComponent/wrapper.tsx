@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useHistory, withRouter } from "react-router-dom";
 import userDto from "@/api/types/user/userDto";
 import actions from "@/redux/actions/actions";
-import setCountDispatch from "@/redux/actions/orders/setCount";
 import signInDispatch from "@/redux/actions/signIn";
 import StateType from "@/redux/types/stateType";
 import roles from "@/types/constants/roles/roles";
@@ -15,7 +14,6 @@ import Products from "../products/products";
 import getRole from "@/helpers/token/getRole";
 import Home from "../homeComponent/homeComponent/home";
 import News from "../news/news";
-import setNewsDispatch from "@/redux/actions/manufacturers/setNews";
 
 const SignIn = React.lazy(() => import("../authComponents/signIn"));
 const SignUp = React.lazy(() => import("../authComponents/signUp"));
@@ -35,9 +33,7 @@ function Wrapper() {
   };
 
   useEffect(() => {
-    dispatch(setCountDispatch());
     dispatch(signInDispatch());
-    dispatch(setNewsDispatch());
     dispatch(actions.setRole(getRole()));
   }, []);
 

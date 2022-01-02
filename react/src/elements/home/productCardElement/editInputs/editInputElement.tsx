@@ -1,31 +1,32 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from "react";
-import detectCallbackByType from "@/helpers/basic/detectCallbackByType";
 import styles from "./editElement.module.scss";
 
 interface Props {
   label: string;
-  setValue: (value: string | number | Date, name: string) => void;
+  setValue: (value: string | number) => void;
   type: string;
   name: string;
   defaultValue?: string | number;
+  value: string;
 }
 
 function EditInputElement(props: Props) {
   const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    props.setValue(detectCallbackByType(text, props.type), props.name);
+    const text = e.currentTarget.value;
+    props.setValue(text);
   };
 
   return (
     <div className={styles.inputElement}>
       <label htmlFor={props.label}>{props.label}</label>
       <input
+        key={props.label}
         type={props.type}
         name={props.label}
         id={props.label}
         onChange={onchange}
-        defaultValue={props.defaultValue}
+        value={props.value}
       />
     </div>
   );

@@ -25,7 +25,6 @@ function News() {
   }, []);
 
   const handleUpdate = (e: news, id: number) => {
-    console.log(`update news ${id}`);
     setModalType(modalType.UPDATE);
     setOpen(true);
     setentity(e);
@@ -33,7 +32,6 @@ function News() {
   };
 
   const handleDelete = (id: number) => {
-    console.log(`delete news ${id}`);
   };
 
   const handleCreate = (id: number) => {

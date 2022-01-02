@@ -2,13 +2,13 @@ import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 import getToken from "./getToken";
 
-const getUsername = (): string => {
+const getEmail = (): string => {
   const token = getToken();
   let role = "";
   try {
     if (token) {
       const decoded = jwtDecode(token);
-      role += decoded.username;
+      role += decoded.sub;
     }
   } catch (e) {
     toast.error(`${e}`);
@@ -16,4 +16,4 @@ const getUsername = (): string => {
   return role;
 };
 
-export default getUsername;
+export default getEmail;

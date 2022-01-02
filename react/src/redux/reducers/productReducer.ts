@@ -1,13 +1,12 @@
-import { readProductDto } from "@/api/types/newProduct/rProductDto";
-import IBasicProduct from "@/api/types/products/IBasicProduct";
+import { updateProductDto } from "@/types/dtos/product/productDto";
 import { SET_PRODUCTS } from "../actions/actions";
 
 interface ProductsAction {
   type: string;
-  payload: readProductDto[];
+  payload: updateProductDto[];
 }
 
-function ProductsReducer(state: readProductDto[] = [], action: ProductsAction): readProductDto[] {
+function ProductsReducer(state: updateProductDto[] = [], action: ProductsAction): updateProductDto[] {
   switch (action.type) {
     case SET_PRODUCTS: {
       if (action.payload) {

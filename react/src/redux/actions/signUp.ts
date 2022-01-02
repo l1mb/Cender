@@ -14,7 +14,6 @@ const signUpDispatch =
       payload: userDto | string | null;
     }>
   ): Promise<void> => {
-    console.log("suka");
     const response = await authService.signUp(user);
     if (response.status === 200) {
       toast.success(errors.emailConfirm, toastProps);

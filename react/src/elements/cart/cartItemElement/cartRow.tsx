@@ -1,5 +1,5 @@
-import OrderItem from "@/api/types/order/orderItem";
 import React, { ChangeEvent } from "react";
+import OrderItem from "@/api/types/order/orderItem";
 import QuantityInput from "../quantityElement/quantityInput";
 import styles from "./cartrow.module.scss";
 
@@ -11,7 +11,7 @@ interface OrderItemWithId {
   orderDate: string;
   amount: number;
   orderId: number;
-  elem:OrderItem;
+  elem: OrderItem;
   price: number;
 }
 

@@ -1,4 +1,4 @@
-import { SET_COUNT } from "../actions/actions";
+import { SET_ORDER } from "../actions/actions";
 import OrderState from "../types/orders";
 
 interface orderAction {
@@ -6,13 +6,14 @@ interface orderAction {
   payload: OrderState;
 }
 
-const orderReducer = (state: OrderState = { count: 0 }, action: orderAction): OrderState => {
+const orderReducer = (state: OrderState = { items: [] }, action: orderAction): OrderState => {
+  console.log(`reducer: ${JSON.stringify(state)}`);
   switch (action.type) {
-    case SET_COUNT: {
+    case SET_ORDER: {
       if (action.payload) {
         return {
           ...state,
-          count: action.payload.count,
+          items: action.payload.items,
         };
       }
       return state;

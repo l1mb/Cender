@@ -1,40 +1,45 @@
-import React, { ChangeEvent, Suspense, useState } from "react";
+import React, { ChangeEvent, Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import StateType from "@/redux/types/stateType";
-import orders from "@/api/httpService/orders/ordersApi";
-import setCountDispatch from "@/redux/actions/orders/setCount";
 import modalType from "@/components/modalComponent/editProductModal/modalType";
 import roles from "@/types/constants/roles/roles";
 import errors from "@/types/constants/errors/errors";
 import styles from "./productCard.module.scss";
 import Spinner from "../spinnerElement/spinner";
-import { readProductDto } from "@/api/types/newProduct/rProductDto";
+import { updateProductDto } from "@/types/dtos/product/productDto";
+import { OrderItem } from "@/redux/types/orders";
+import actions from "@/redux/actions/actions";
 
 const EditProduct = React.lazy(() => import("@/components/modalComponent/editProductModal/editProduct"));
 const SureCheck = React.lazy(() => import("@/components/modalComponent/editProductModal/sureCheck/sureCheck"));
 const Modal = React.lazy(() => import("@/components/modalComponent/modalComponent/modal"));
 
-const ProductCard: React.FC<{ product: readProductDto }> = React.memo(({ product }) => {
+const ProductCard: React.FC<{ product: updateProductDto }> = React.memo(({ product }) => {
   const [deletableProduct, setDeletableProduct] = useState<{ name: string; id: number }>();
   const [isOpenCheck, setOpenCheck] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [count, setCount] = useState("1");
 
-  const successMessage = "Added successfully";
-
   const dispatch = useDispatch();
 
-  const role = useSelector<StateType, string>((state) => state.role);
-  const userId = useSelector<StateType, number>((state) => state.user.id);
+  const appState = useSelector<StateType, StateType>((state) => state);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const data = e.currentTarget.value;
     setCount(data);
   };
 
+  const { authenticated } = appState.user;
+  const { role } = appState;
+  const orders = appState.orders.items;
+
+  useEffect(() => {
+    console.log(`items ${JSON.stringify(orders)}`);
+  }, [orders]);
+
   const handleAdd = async () => {
-    if (!userId) {
+    if (!authenticated) {
       toast.error(errors.authorize);
       return;
     }
@@ -45,36 +50,29 @@ const ProductCard: React.FC<{ product: readProductDto }> = React.memo(({ product
       toast.error(errors.noproduct);
       return;
     }
-
-    const order: Response = await orders.postOrder({
-      productId,
-      userId,
-      count: parseInt(count, 10),
-    });
-
-    if (order.status === 201) {
-      toast.success(successMessage);
-      dispatch(setCountDispatch());
-    } else if (order.status === 500) {
-      toast.error(errors.orderExist);
-    }
+    const item: OrderItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+    };
+    console.log(orders.concat(item));
+    dispatch(actions.setOrderItems({ items: orders.concat(item) }));
   };
 
   return (
     <div className={styles.flipCard}>
       <div className={styles.flipInner}>
         <div className={styles.flipFront}>
-          <img className={styles.coverImage} src={product.logo} alt="Avatar" />
           <div className={styles.bottomColumns}>
-            <p>{product?.name}</p>
+            <p>{product?.title}</p>
             <p>{product?.price}$</p>
-            <p>Manufacturer: {product?.mnfrId}</p>
+            <p>{product?.vendor.vendorName}</p>
+            <p>{product?.rating}</p>
           </div>
         </div>
         <div className={styles.flipBack}>
           <div className={styles.backText}>
-            <p>{product?.description}</p>
-            <p>{product?.pickups}</p>
+            <p>{product?.productDescription}</p>
           </div>
 
           {role === roles.admin ? (

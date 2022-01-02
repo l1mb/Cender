@@ -30,3 +30,43 @@
     flex-direction: column;
   }
 }
+
+.filterContainer {
+  padding: 20px;
+
+  width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 0 3px white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  background: rgba($color: #000000, $alpha: 0.6);
+  color: white;
+  .labels {
+    margin: 20px 0px 6px 0px;
+  }
+
+  .firstLabel {
+    text-align: center;
+    margin: 0px 0px 6px 0px;
+  }
+  .createButton {
+    width: 100%;
+    button {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.names {
+  width: 100%;
+  margin: 16px 0 !important;
+}
+.twoColumns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}

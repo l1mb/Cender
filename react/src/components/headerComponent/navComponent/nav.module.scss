@@ -1,0 +1,93 @@
+@import "../../../components/homeComponent/shared.module.scss";
+
+.navBar {
+  height: auto;
+  align-self: baseline;
+
+  button {
+    background: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+
+    span {
+      color: white;
+      font-size: 16px;
+    }
+  }
+
+  li {
+    border-radius: 4px;
+    padding: 14px 18px;
+    background-color: transparent;
+
+    a,
+    span {
+      color: white;
+      text-decoration: none; /* no underline */
+    }
+  }
+
+  li:hover {
+    background-color: $hoverBlack;
+
+    a,
+    span {
+      animation: textAnimation 2s forwards;
+    }
+  }
+
+  .dropdown_wrapper {
+    display: none;
+  }
+
+  .dropdown_link_wrapper {
+    position: relative;
+
+    padding: 14px 18px;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    background-color: transparent;
+  }
+
+  .dropdown_link_wrapper:hover .dropdown_wrapper {
+    display: flex;
+  }
+
+  .dropdown_link_wrapper:focus .dropdown_wrapper {
+    display: flex;
+  }
+
+  .active {
+    border-bottom: 2px solid $accent;
+    padding-bottom: 10px;
+  }
+
+  li:focus-within {
+    a,
+    span {
+      animation: textAnimation 2s forwards;
+    }
+  }
+
+  ol {
+    margin: 6px;
+    display: flex;
+    align-items: baseline;
+  }
+}
+
+@keyframes textAnimation {
+  0% {
+    color: white;
+  }
+
+  30% {
+    color: $accent;
+  }
+
+  100% {
+    color: $accent;
+  }
+}

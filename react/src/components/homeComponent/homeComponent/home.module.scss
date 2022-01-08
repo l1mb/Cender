@@ -1,0 +1,37 @@
+.wrapper {
+  height: 90vh;
+  width: 100%;
+
+  padding-bottom: 90px;
+
+  background-image: url("../../../assets/images/home/guitarLogo.jpg");
+
+  background-position: center center;
+  background-size: cover;
+
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  .searchBar {
+    input {
+      width: 40vw;
+    }
+
+    margin: 15px auto;
+  }
+
+  .categories {
+    width: 45vw;
+    margin: 15px auto;
+  }
+
+  .Products {
+    width: 45vw;
+    margin: 15px auto;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 0, 0, 0.7) rgba(0, 0, 0, 0.5);
+}

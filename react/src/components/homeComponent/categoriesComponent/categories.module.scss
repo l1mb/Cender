@@ -1,0 +1,14 @@
+@import "../../../components/homeComponent/shared.module.scss";
+
+.wrapper {
+  background-color: $half-transparent-black;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  div {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

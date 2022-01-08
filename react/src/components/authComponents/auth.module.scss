@@ -1,0 +1,13 @@
+.backgroundWrapper {
+  height: 90vh;
+  width: 100%;
+
+  padding-bottom: 90px;
+
+  background-image: url("../../assets/images/manPlayingFatGuitar.jpg");
+
+  background-position: center center;
+  background-size: cover;
+
+  overflow-y: auto;
+}

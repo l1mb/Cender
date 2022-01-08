@@ -1,0 +1,72 @@
+.modalWrapper {
+  width: 500px;
+  flex-direction: column;
+  background: black;
+  display: flex;
+
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 90px;
+      height: 30px;
+      background: transparent;
+      border: none;
+      color: white;
+      border-radius: 5px 5px 0 0;
+      border-bottom: solid 2px #6666ff;
+      margin: 20px 0;
+      transition: background 0.3s ease;
+    }
+
+    button:active {
+      background: rgba($color: #6666ff, $alpha: 0.6);
+    }
+  }
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.filterContainer {
+  padding: 20px;
+
+  width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 0 3px white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  background: rgba($color: #000000, $alpha: 0.6);
+  color: white;
+  .labels {
+    margin: 20px 0px 6px 0px;
+  }
+
+  .firstLabel {
+    text-align: center;
+    margin: 0px 0px 6px 0px;
+  }
+  .createButton {
+    width: 100%;
+    button {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.names {
+  width: 100%;
+  margin: 16px 0 !important;
+}
+.twoColumns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
